@@ -28,7 +28,7 @@ endfunction
 
 au BufNewFile,BufRead,BufEnter *.frag,*.vert,*.fp,*.vp,*.glsl,*.vs,*.fs set syntax=glsl
 
-set listchars=tab:<-,trail:!,extends:>,precedes:<
+set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
 set list
 
 "My Key Mapping"

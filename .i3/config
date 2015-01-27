@@ -44,23 +44,11 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# alternatively, you can use the cursor keys:
-#bindsym $mod+Left focus left
-#bindsym $mod+Down focus down
-#bindsym $mod+Up focus up
-#bindsym $mod+Right focus right
-
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
-
-# alternatively, you can use the cursor keys:
-#bindsym $mod+Shift+Left move left
-#bindsym $mod+Shift+Down move down
-#bindsym $mod+Shift+Up move up
-#bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
 bindsym $mod+b split h
@@ -70,6 +58,8 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
+
+bindsym $mod+c move absolute position center
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -86,31 +76,39 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-bindsym $mod+c focus child
+bindsym $mod+q focus child
 
-# switch to workspace
-bindsym $mod+1 workspace 1:Web
-bindsym $mod+2 workspace 2:Coding
-bindsym $mod+3 workspace 3:IRC
-bindsym $mod+4 workspace 4:File
-bindsym $mod+5 workspace 5:Steam
-bindsym $mod+6 workspace 6:Workspace
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+# workspaces
+set $WS1 1: 
+set $WS2 2: 
+set $WS3 3: 
+set $WS4 4: 
+set $WS5 5: 
+set $WS6 6: 
+set $WS7 7: 
+set $WS8 8: 
+set $WS9 9: 
+
+bindsym $mod+1 workspace $WS1
+bindsym $mod+2 workspace $WS2
+bindsym $mod+3 workspace $WS3
+bindsym $mod+4 workspace $WS4
+bindsym $mod+5 workspace $WS5
+bindsym $mod+6 workspace $WS6
+bindsym $mod+7 workspace $WS7
+bindsym $mod+8 workspace $WS8
+bindsym $mod+9 workspace $WS9
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1:Web
-bindsym $mod+Shift+2 move container to workspace 2:Coding
-bindsym $mod+Shift+3 move container to workspace 3:IRC
-bindsym $mod+Shift+4 move container to workspace 4:File
-bindsym $mod+Shift+5 move container to workspace 5:Steam
-bindsym $mod+Shift+6 move container to workspace 6:Workspace
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace $WS1
+bindsym $mod+Shift+2 move container to workspace $WS2
+bindsym $mod+Shift+3 move container to workspace $WS3
+bindsym $mod+Shift+4 move container to workspace $WS4
+bindsym $mod+Shift+5 move container to workspace $WS5
+bindsym $mod+Shift+6 move container to workspace $WS6
+bindsym $mod+Shift+7 move container to workspace $WS7
+bindsym $mod+Shift+8 move container to workspace $WS8
+bindsym $mod+Shift+9 move container to workspace $WS9
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -132,12 +130,6 @@ mode "resize" {
         bindsym j resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
         # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -145,23 +137,39 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+bindsym $mod+F2 move scratchpad
+bindsym $mod+F1 scratchpad show
+
 #MY PERSONAL SETTING
 
-#Color setting
-client.focused		#0d90d6	#732ec7	#ffffff	#ff0000
-client.unfocused	#000000	#2f1a47	#b8b8b8	#0000ff
+# Layout colors           bord      bg    text
+client.focused #1F1F1F #505050 #BBBBBB #4F4F4F
+client.focused_inactive #1A1A1A #1A1A1A #424242 #121212
+client.unfocused #1A1A1A #1A1A1A #4F4F4F #1A1A1A
+client.urgent #1A1A1A #3B89B5 #a5a5a5 #1A1A1A
+client.background #121212
 
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+new_window normal
+new_float 1pixel
 focus_follows_mouse no
+
+workspace_auto_back_and_forth yes
+
+bindsym $mod+F9 border normal
+bindsym $mod+F10 border 1pixel
+bindsym $mod+F11 border none
 
 #Workspace move
 bindsym $mod+n workspace prev
 bindsym $mod+m workspace next
 
 #Sound control
-bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.i3/sound.sh raise
-bindsym XF86AudioLowerVolume exec --no-startup-id ~/.i3/sound.sh down
-bindsym XF86AudioMute exec --no-startup-id ~/.i3/sound.sh mute
-bindsym XF86XK_Suspend exec --no-startup-id ~/.i3/sound.sh mute
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master '5%+'
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset  Master '5%-'
+bindsym XF86AudioMute exec amixer set Master toggle
+bindsym Print exec scrot -e 'mv $f ~/Picture/SS'
 
 #Lockscreen
 bindsym Control+Mod1+l exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u -d
@@ -174,7 +182,16 @@ bindsym Control+Mod1+s exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win
 bar {
         status_command i3status
 	position top
-	font pango:Electrolize 10
+	font pango: Electrolize 10, Icon 10
+        colors {
+            background #242C33
+            statusline #FFFFFF
+            separator #808080
+            focused_workspace #444444 #DE5362 #F1F1F1
+            active_workspace #444444 #080808 #797979
+            inactive_workspace #444444 #080808 #CACACA
+            urgent_workspace #444444 #080808 #EA4C59
+        }
 }
 
 # Startup applications
