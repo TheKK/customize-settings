@@ -192,6 +192,8 @@ bar {
             inactive_workspace #444444 #080808 #CACACA
             urgent_workspace #444444 #080808 #EA4C59
         }
+	wheel_up_cmd nop
+	wheel_down_cmd nop
 }
 
 # Startup applications

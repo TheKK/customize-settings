@@ -27,9 +27,9 @@ function Multiple_cursors_after()
 endfunction
 
 au BufNewFile,BufRead,BufEnter *.frag,*.vert,*.fp,*.vp,*.glsl,*.vs,*.fs set syntax=glsl
+autocmd Filetype gitcommit setlocal spell textwidth=72
 
 set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
-set list
 
 "My Key Mapping"
 noremap <F2> :SyntasticToggleMode<cr>
@@ -81,6 +81,8 @@ Bundle 'sophacles/vim-processing'
 Bundle 'octave.vim--'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'kien/ctrlp.vim'
+Bundle 'awk.vim'
+Bundle 'medvid/vim-armasm'
 "Bundle 'chrisbra/Replay'
 "Bundle 'ervandew/supertab'
 " ...
@@ -142,7 +144,7 @@ let g:syntastic_warning_symbol = '⚠'
 let g:ycm_global_ycm_extra_conf =  '~/'
 "let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_filepath_completion_use_working_dir = 1
-let g:ycm_key_invoke_completiong = '<C-l>'
+let g:ycm_key_invoke_completion = '<C-Return>'
 let g:ycm_warning_symbol = '>>'
 set completeopt=menu
 
