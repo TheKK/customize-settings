@@ -76,4 +76,5 @@ export EDITOR=vim
 export HAXE_STD_PATH=/opt/haxe/std	#for haxe
 
 # My startup action
-#alias grep='grep --color=always'
+alias grep='grep --color=always'
+alias ag='ag --color'
