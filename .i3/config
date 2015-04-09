@@ -171,6 +171,8 @@ bindsym XF86AudioLowerVolume exec amixer sset Master '5%-'
 bindsym XF86AudioMute exec amixer set Master toggle
 bindsym Print exec scrot -e 'mv $f ~/Picture/SS'
 
+#Egg
+bindsym Control+Mod1+k exec "espeak -s 140 -v zh '你怎麽找到我的 這不可能啊 我明明躲得很好'"
 #Lockscreen
 bindsym Control+Mod1+l exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u -d
 
