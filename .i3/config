@@ -176,6 +176,10 @@ bindsym Control+Mod1+k exec "espeak -s 140 -v zh '你怎麽找到我的 這不�
 #Lockscreen
 bindsym Control+Mod1+l exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u -d
 
+#Rotate screen
+bindsym Control+Mod1+r exec xrandr --output DFP1 --rotate left
+bindsym Control+Mod1+n exec xrandr --output DFP1 --rotate normal
+
 #Suspend system
 bindsym Control+Mod1+s exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u && systemctl suspend
 
