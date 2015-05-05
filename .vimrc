@@ -27,6 +27,7 @@ function Multiple_cursors_after()
 endfunction
 
 au BufNewFile,BufRead,BufEnter *.frag,*.vert,*.fp,*.vp,*.glsl,*.vs,*.fs set syntax=glsl
+au FileType mail setl spell fo=wantq1 smc=0
 autocmd Filetype gitcommit setlocal spell textwidth=72
 
 set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
@@ -81,9 +82,10 @@ Bundle 'sophacles/vim-processing'
 Bundle 'octave.vim--'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'kien/ctrlp.vim'
-Bundle 'awk.vim'
+"Bundle 'Shougo/unite.vim'
 Bundle 'syntaxudev.vim'
 Bundle 'medvid/vim-armasm'
+"Bundle 'Shougo/vimproc.vim'
 "Bundle 'chrisbra/Replay'
 "Bundle 'ervandew/supertab'
 " ...
@@ -158,7 +160,9 @@ omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 
-let g:ctrlp_extensions = ['mixed']
-let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_by_filename = 1
 let g:ctrlp_open_new_file = 't'
+let g:ctrlp_regexp = 0
+"let g:ctrlp_max_files = 0
+
+noremap <C-P> :Unite -silent -direction=below -start-insert file_rec<cr>
