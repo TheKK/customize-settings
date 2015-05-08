@@ -18,7 +18,7 @@ ZSH_THEME="ys"
 # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment to change how often before auto-updates occur? (in days)
-export UPDATE_ZSH_DAYS=7
+export UPDATE_ZSH_DAYS=2
 
 # Uncomment following line if you want to disable colors in ls
 # DISABLE_LS_COLORS="true"
@@ -45,7 +45,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git hg tmux catimg nyan zsh-syntax-highlighting)
+plugins=(git hg tmux catimg nyan zsh-syntax-highlighting colored-man colorize
+taskwarrior command-not-found cp extract web-search fasd gitignore themes)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -53,6 +54,7 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
 export PATH=$PATH:$HOME/.cabal/bin
+export PATH=$PATH:$HOME/.go/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # # Preferred editor for local and remote sessions
@@ -76,7 +78,10 @@ export QT_IM_MODULE=ibus
 export EDITOR=vim
 export HAXE_STD_PATH=/opt/haxe/std	#for haxe
 export GCC_COLORS=1
+#export GOROOT=~/.go
 
 # My startup action
 alias grep='grep --color=always'
 alias ag='ag --color'
+alias packerq='packer --nodeit'
+alias uz='source ~/.zshrc'

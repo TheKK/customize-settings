@@ -174,9 +174,7 @@ bindsym Print exec scrot -e 'mv $f ~/Picture/SS'
 #Egg
 bindsym Control+Mod1+k exec "espeak -s 140 -v zh '你怎麽找到我的 這不可能啊 我明明躲得很好'"
 #Lockscreen
-bindsym Control+Mod1+l exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u -d
-#email
-bindsym Control+Mod1+e exec offlineimap 
+bindsym Control+Mod1+l exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u
 
 #Rotate screen
 bindsym Control+Mod1+r exec xrandr --output DFP1 --rotate left
