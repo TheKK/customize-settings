@@ -2,13 +2,12 @@
 
 echo "Start update process..."
 
-cp -r ~/.vim/colors ./
-cp -r ~/.vimrc ./
-cp -r ~/.zshrc ./
-cp -r ~/.i3 ./
-cp -r ~/.i3status.conf ./
+cp -rv ~/.vim/colors ./
+cp -rv ~/.vimrc ./
+cp -rv ~/.zshrc ./
+cp -rv ~/.i3 ./
+cp -rv ~/.i3status.conf ./
 
 git diff
 
 echo "Done! Jolly good!!"
-exit 0
