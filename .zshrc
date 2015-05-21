@@ -53,6 +53,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
+export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin
 export PATH=$PATH:$HOME/.cabal/bin
 export PATH=$PATH:$HOME/.go/bin
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -83,5 +84,5 @@ export GCC_COLORS=1
 # My startup action
 alias grep='grep --color=always'
 alias ag='ag --color'
-alias packerq='packer --nodeit'
+alias packerq='packer --noedit'
 alias uz='source ~/.zshrc'

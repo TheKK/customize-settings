@@ -55,8 +55,8 @@ noremap <F10> :set list!<cr>
 set nocompatible              " be iMproved
 filetype off                  " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " let Vundle manage Vundle
 " required
@@ -90,6 +90,7 @@ Bundle 'medvid/vim-armasm'
 "Bundle 'ervandew/supertab'
 " ...
 
+call vundle#end()
 filetype plugin indent on     " required!
 "
 " Brief help
@@ -118,15 +119,15 @@ let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = '⮀'
-let g:airline#extensions#tabline#left_alt_sep = '⮁'
+"let g:airline#extensions#tabline#left_sep = '⮀'
+"let g:airline#extensions#tabline#left_alt_sep = '⮁'
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
 endif
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
+"let g:airline_left_sep = '⮀'
+"let g:airline_left_alt_sep = '⮁'
+"let g:airline_right_sep = '⮂'
+"let g:airline_right_alt_sep = '⮃'
 let g:airline_symbols.branch = '⭠'
 let g:airline_symbols.readonly = '⭤'
 let g:airline_symbols.linenr = '⭡'
