@@ -2,7 +2,9 @@
 " Maintainer:	Bohdan Vlasyuk <bohdan@vstu.edu.ua>
 " Last Change:	2008 Jul 18
 
-" darkblue -- for those who prefer dark background
+" Modifier:     KK <thumbd03803@gmail.com>
+
+" myDarkblue -- for those who prefer dark background
 " [note: looks bit uglier with come terminal palettes,
 " but is fine on default linux console palette.]
 
@@ -49,7 +51,7 @@ hi DiffText	cterm=bold ctermbg=red gui=bold guibg=Red
 hi Cursor	guifg=black guibg=yellow ctermfg=black ctermbg=yellow
 hi lCursor	guifg=black guibg=white ctermfg=black ctermbg=white
 
-hi ColorColumn	ctermfg=yellow ctermbg=235 cterm=bold
+hi ColorColumn	ctermbg=235
 
 hi Comment	guifg=#80a0ff ctermfg=darkred
 hi Constant	ctermfg=magenta guifg=#ffa0a0 cterm=none

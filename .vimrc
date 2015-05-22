@@ -88,6 +88,7 @@ Bundle 'medvid/vim-armasm'
 "Bundle 'Shougo/vimproc.vim'
 "Bundle 'chrisbra/Replay'
 "Bundle 'ervandew/supertab'
+Bundle 'nanotech/jellybeans.vim'
 " ...
 
 call vundle#end()
