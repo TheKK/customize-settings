@@ -16,7 +16,7 @@ endif
 let colors_name = "myDarkblue"
 
 hi Normal		guifg=#c0c0c0 guibg=#000040						ctermfg=gray
-hi ErrorMsg		guifg=#ffffff guibg=#287eff						ctermfg=white ctermbg=lightblue
+hi ErrorMsg		guifg=#ffffff guibg=#287eff						ctermfg=black ctermbg=lightblue
 hi Visual		guifg=#8080ff guibg=fg		gui=reverse				ctermfg=black ctermbg=75
 hi VisualNOS	guifg=#8080ff guibg=fg		gui=reverse,underline	ctermfg=lightblue ctermbg=fg cterm=reverse,underline
 hi Todo			guifg=#d14a14 guibg=#1248d1						ctermfg=red	ctermbg=darkblue
@@ -33,7 +33,7 @@ hi MoreMsg			ctermfg=darkgreen	ctermfg=darkgreen
 hi Question			guifg=green gui=none ctermfg=green cterm=none
 hi NonText			guifg=#0030ff		ctermfg=33
 
-hi spellBad		ctermfg=88 ctermbg=202
+hi spellBad	ctermbg=none cterm=underline,bold
 hi StatusLine	guifg=blue guibg=darkgray gui=none		ctermfg=blue ctermbg=gray term=none cterm=none
 hi StatusLineNC	guifg=black guibg=darkgray gui=none		ctermfg=black ctermbg=gray term=none cterm=none
 hi VertSplit	guifg=black guibg=darkgray gui=none		ctermfg=gray term=none cterm=bold
@@ -53,7 +53,7 @@ hi lCursor	guifg=black guibg=white ctermfg=black ctermbg=white
 
 hi ColorColumn	ctermbg=235
 
-hi Comment	guifg=#80a0ff ctermfg=darkred
+hi Comment	guifg=#80a0ff ctermfg=darkred cterm=bold
 hi Constant	ctermfg=magenta guifg=#ffa0a0 cterm=none
 hi Special	ctermfg=brown guifg=Orange cterm=none gui=none
 hi Identifier	ctermfg=cyan guifg=#40ffff cterm=none

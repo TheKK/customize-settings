@@ -10,35 +10,41 @@ set cinoptions=:0,l1,t0,(0,W1s,m1,g0
 set t_Co=256
 set colorcolumn=81
 set cursorline
-"set hlsearch
+set tabstop=8
+set softtabstop=8
+"set expandtab
 
+"set hlsearch
 "augroup vimrc_autocmds
-	"autocmd BufEnter *.cpp,*.c*.h,*.hpp highlight OverLength ctermbg=63 ctermfg=white guibg=#111111
-	"autocmd BufEnter *.cpp,*.c*.h,*.hpp match OverLength /\%81v.*/
+        "autocmd BufEnter *.cpp,*.c*.h,*.hpp highlight OverLength ctermbg=63 ctermfg=white guibg=#111111
+        "autocmd BufEnter *.cpp,*.c*.h,*.hpp match OverLength /\%81v.*/
 "augroup END
 
-function Multiple_cursors_before()
-	let s:old_ycm_whitelist = g:ycm_filetype_whitelist
-	let g:ycm_filetype_whitelist = {}
-endfunction
+fu! Multiple_cursors_before()
+        let s:old_ycm_whitelist = g:ycm_filetype_whitelist
+        let g:ycm_filetype_whitelist = {}
+endf
 
-function Multiple_cursors_after()
-	let g:ycm_filetype_whitelist = s:old_ycm_whitelist
-endfunction
+fu! Multiple_cursors_after()
+        let g:ycm_filetype_whitelist = s:old_ycm_whitelist
+endf
 
-au BufNewFile,BufRead,BufEnter *.frag,*.vert,*.fp,*.vp,*.glsl,*.vs,*.fs set syntax=glsl
-au FileType mail setl spell fo=wantq1 smc=0
+autocmd BufNewFile,BufRead,BufEnter *.frag,*.vert,*.fp,*.vp,*.glsl,*.vs,*.fs set syntax=glsl
+autocmd FileType mail setl spell fo=wantq1 smc=0
 autocmd Filetype gitcommit setlocal spell textwidth=72
+autocmd BufNewFile,BufRead,BufEnter *.md setlocal spell textwidth=72 syntax=markdown wrap
+autocmd FileType javascript set ai sw=2 ts=2 sta et fo=croql
 
 set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
 
 "My Key Mapping"
-noremap <F2> :SyntasticToggleMode<cr>
+noremap <silent><F1> :JSHint moz:true esnext:true<CR>
+noremap <F2> :source ~/.vimrc<cr>
 noremap <F3> :set number!<cr>
 noremap <F4> :NERDTreeToggle<cr>
 
-noremap <F5> :cp<cr>
-noremap <F6> :cn<cr>
+noremap <F5> :lnext<CR>
+noremap <F6> :lprevious<CR>
 
 noremap <F7> gT
 noremap <F8> gt
@@ -48,7 +54,7 @@ noremap <C-F8> :tabmove +1<cr>
 noremap <F9> :TagbarToggle<cr>
 noremap <F10> :set list!<cr>
 
-
+noremap <C-b> :CtrlPBuffer<cr>
 
 
 "Vundle Pluging"
@@ -65,7 +71,7 @@ Bundle 'gmarik/vundle.git'
 " My bundles here:
 "Bundle 'TagHighlight'
 Bundle 'Valloric/YouCompleteMe'
-"Bundle 'scrooloose/nerdtree.git'
+Bundle 'scrooloose/nerdtree.git'
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'guns/xterm-color-table.vim.git'
 "Bundle 'Rip-Rip/clang_complete'
@@ -89,6 +95,15 @@ Bundle 'medvid/vim-armasm'
 "Bundle 'chrisbra/Replay'
 "Bundle 'ervandew/supertab'
 Bundle 'nanotech/jellybeans.vim'
+Bundle 'pangloss/vim-javascript'
+"Bundle 'fholgado/minibufexpl.vim'
+Bundle 'marijnh/tern_for_vim'
+Bundle 'Shutnik/jshint2.vim'
+Bundle 'wting/rust.vim'
+Bundle 'elzr/vim-json'
+Bundle 'airblade/vim-gitgutter'
+"Bundle 'jeaye/color_coded'
+Bundle 'rdnetto/YCM-Generator'
 " ...
 
 call vundle#end()
@@ -108,7 +123,7 @@ filetype plugin indent on     " required!
 "Powerline"
 set nocompatible   " Disable vi-compatibility
 set laststatus=2   " Always show the statusline
-set encoding=utf-8 " Necessary to show Unicode glyphs
+"set encoding=utf-8 " Necessary to show Unicode glyphs
 
 let g:Powerline_symbols='fancy'
 let g:Powerline_colorscheme = 'solarized256'
@@ -123,15 +138,15 @@ let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#left_sep = '⮀'
 "let g:airline#extensions#tabline#left_alt_sep = '⮁'
 if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
+        let g:airline_symbols = {}
 endif
 "let g:airline_left_sep = '⮀'
 "let g:airline_left_alt_sep = '⮁'
 "let g:airline_right_sep = '⮂'
 "let g:airline_right_alt_sep = '⮃'
-let g:airline_symbols.branch = '⭠'
-let g:airline_symbols.readonly = '⭤'
-let g:airline_symbols.linenr = '⭡'
+"let g:airline_symbols.branch = '⭠'
+"let g:airline_symbols.readonly = '⭤'
+"let g:airline_symbols.linenr = '⭡'
 
 let g:syntastic_check_on_open = 1
 let g:syntastic_cpp_checkers = ['clang', 'gcc']
@@ -146,7 +161,9 @@ let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 
-let g:ycm_global_ycm_extra_conf =  '~/'
+map <C-]> :YcmCompleter GoToImprecise<CR>
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 "let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_filepath_completion_use_working_dir = 1
 let g:ycm_key_invoke_completion = '<C-Return>'
@@ -167,4 +184,4 @@ let g:ctrlp_open_new_file = 't'
 let g:ctrlp_regexp = 0
 "let g:ctrlp_max_files = 0
 
-noremap <C-P> :Unite -silent -direction=below -start-insert file_rec<cr>
+"noremap <C-P> :Unite -silent -direction=below -start-insert file_rec<cr>

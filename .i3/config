@@ -31,7 +31,7 @@ bindsym $mod+Return exec terminator
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec "dmenu_run -b -i -l 26 -p '>_' -fn 'Droid Sans Mono-19' -nb '#444444' -nf '#888888' -sb '#732ec7' "
+bindsym $mod+d exec "dmenu_run -b -i -l 15 -p '>_' -fn 'Hermit-10' -nb '#444444' -nf '#888888' -sb '#732ec7' "
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
@@ -50,6 +50,14 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
+# move workspace to another screen
+bindsym $mod+x move workspace to output right
+bindsym $mod+z focus output right
+bindsym $mod+Up focus output up
+bindsym $mod+Left focus output left
+bindsym $mod+Right focus output right
+bindsym $mod+Down focus output down
+
 # split in horizontal orientation
 bindsym $mod+b split h
 
@@ -58,8 +66,8 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
-
 bindsym $mod+c move absolute position center
+bindsym $mod+Shift+s exec "sleep 1 && xset dpms force off"
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -84,7 +92,7 @@ set $WS2 2: 
 set $WS3 3: 
 set $WS4 4: 
 set $WS5 5: 
-set $WS6 6: 
+set $WS6 6: 
 set $WS7 7: 
 set $WS8 8: 
 set $WS9 9: 
@@ -109,6 +117,10 @@ bindsym $mod+Shift+6 move container to workspace $WS6
 bindsym $mod+Shift+7 move container to workspace $WS7
 bindsym $mod+Shift+8 move container to workspace $WS8
 bindsym $mod+Shift+9 move container to workspace $WS9
+
+# move firefox console to bigger screen
+assign [title="Console.*"] "$WS2"
+workspace "$WS2" output VGA1
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -162,14 +174,20 @@ bindsym $mod+F10 border 1pixel
 bindsym $mod+F11 border none
 
 #Workspace move
-bindsym $mod+n workspace prev
-bindsym $mod+m workspace next
+bindsym $mod+n workspace prev_on_output
+bindsym $mod+m workspace next_on_output
+
+popup_during_fullscreen leave_fullscreen
 
 #Sound control
-bindsym XF86AudioRaiseVolume exec amixer sset Master '5%+'
-bindsym XF86AudioLowerVolume exec amixer sset Master '5%-'
-bindsym XF86AudioMute exec amixer set Master toggle
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +5%
+bindsym XF86AudioLowerVolume exec pactl -- set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -5%
+bindsym XF86AudioMute exec pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle
 bindsym Print exec scrot -e 'mv $f ~/Picture/SS'
+
+#Brightness control
+bindsym XF86MonBrightnessDown exec light -U 5
+bindsym XF86MonBrightnessUp exec light -A 5
 
 #Egg
 bindsym Control+Mod1+k exec "espeak -s 140 -v zh '你怎麽找到我的 這不可能啊 我明明躲得很好'"
@@ -177,8 +195,8 @@ bindsym Control+Mod1+k exec "espeak -s 140 -v zh '你怎麽找到我的 這不�
 bindsym Control+Mod1+l exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u
 
 #Rotate screen
-bindsym Control+Mod1+r exec xrandr --output DFP1 --rotate left
-bindsym Control+Mod1+n exec xrandr --output DFP1 --rotate normal
+bindsym Control+Mod1+r exec xrandr --output VGA1 --rotate left
+bindsym Control+Mod1+n exec xrandr --output VGA1 --rotate normal
 
 #Suspend system
 bindsym Control+Mod1+s exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u && systemctl suspend
@@ -199,8 +217,7 @@ bar {
             inactive_workspace #444444 #080808 #CACACA
             urgent_workspace #444444 #080808 #EA4C59
         }
-	wheel_up_cmd nop
-	wheel_down_cmd nop
+	tray_output primary
 }
 
 # Startup applications
@@ -209,3 +226,5 @@ exec --no-startup-id xset s off
 exec --no-startup-id feh --bg-fill /home/kk/Picture/Wallpapers/cat.jpg
 exec --no-startup-id unclutter
 exec --no-startup-id ibus-daemon
+exec --no-startup-id nm-applet
+exec --no-startup-id unity-settings-daemon
