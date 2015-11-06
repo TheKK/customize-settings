@@ -1,0 +1,27 @@
+# Sync
+taskd.certificate=~/.task/private.certificate.pem
+taskd.key=~/.task/private.key.pem
+taskd.ca=~/.task/ca.cert.pem
+taskd.server=taskwarrior.inthe.am:53589
+taskd.credentials=inthe_am/thumbd03803/c39c9253-580a-4736-bd54-a38642870f35
+taskd.trust=ignore hostname
+
+# Ouputs
+default.command = next -in
+verbose = off
+
+# Inbox
+urgency.user.tag.in.coefficient = 15.0
+color.tag.in = green
+
+# 'task in' report
+report.in.columns = id,description
+report.in.columns = id,description
+report.in.description = Inbox
+report.in.filter = status:pending limit:page (+in)
+report.in.labels = ID,Description
+
+# Contextes
+context.work = +@work or +in
+context.home = +@home or +in
+context=work

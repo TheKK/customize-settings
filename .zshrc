@@ -97,9 +97,42 @@ alias vim='nvim'
 alias vi='nvim'
 
 # My GTD alias
-alias addin='task add +in'
-alias inbox='task +in'
+in()
+{
+	if [ "$#" -eq "0" ]; then
+		task in # show in tasks
+	else
+		task add +in "$@" # add something as in task
+	fi
+}
 
+tick()
+{
+	if [ "$#" -lt 2 ]; then
+		echo "tick: usage: tick DATE DESC"
+		return 1
+	fi
+
+	deadline="$1"
+	shift
+	task add +tickle wait:"$deadline" "$@"
+}
+
+next()
+{
+	if [ "$#" -eq "0" ]; then
+		task next # show in tasks
+	else
+		task add +next "$@" # add something as in task
+	fi
+}
+
+alias think='tick +1d'
+alias ctwork='task context work'
+alias cthome='task context home'
+alias ctnone='task context none'
+
+# Welcom message
 toilet --metal -f future "Welcom to KK's world"
 
 # Add environment variable COCOS_CONSOLE_ROOT for cocos2d-x
