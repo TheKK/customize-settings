@@ -11,13 +11,14 @@ TARGETS=(
 	~/.tmux.conf $PWD
 	~/.spacemacs $PWD
 	~/.taskrc $PWD
+	~/.vimperatorrc $PWD
 )
 
 TARGET_LEN=${#TARGETS[@]}
 
 update()
 {
-	for (( i = 0; i <= $TARGET_LEN / 2; i += 2)); do
+	for (( i = 0; i < $TARGET_LEN; i += 2)); do
 		local src=${TARGETS[i]}
 		local dest=${TARGETS[i + 1]}
 
@@ -27,7 +28,7 @@ update()
 
 deploy()
 {
-	for (( i = 0; i <= $TARGET_LEN / 2; i += 2)); do
+	for (( i = 0; i < $TARGET_LEN; i += 2)); do
 		local src=${TARGETS[i + 1]}
 		local dest=${TARGETS[i]}
 
