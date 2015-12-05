@@ -51,7 +51,6 @@ cp extract fasd gitignore themes adb)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
 export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin
 export PATH=$PATH:$HOME/.cabal/bin
@@ -59,7 +58,8 @@ export PATH=$PATH:$HOME/.go/bin
 export PATH=$PATH:$HOME/Apps/git-cinnabar
 export PATH=/home/mozilla-tpe/.linuxbrew/bin:$PATH
 export PATH=/home/mozilla-tpe/.linuxbrew/sbin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
+export PATH=/home/mozilla-tpe/Apps/android-sdk-linux/tools:$PATH
+export PATH=/home/mozilla-tpe/Apps/android-ndk-r10e:$PATH
 
 # # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -75,7 +75,7 @@ export PATH=/home/mozilla-tpe/.linuxbrew/sbin:$PATH
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # My settings
-export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
+export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig
 export TERM=xterm-256color
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
@@ -95,6 +95,8 @@ alias cat='ccat'
 alias mtr='mtr -t'
 alias vim='nvim'
 alias vi='nvim'
+alias ec='emacsclient -t'
+alias nyancha='mocha --reporter nyan'
 
 # My GTD alias
 in()
@@ -127,7 +129,13 @@ next()
 	fi
 }
 
+someday()
+{
+	task add wait:someday "$@"
+}
+
 alias think='tick +1d'
+alias ct='task context show'
 alias ctwork='task context work'
 alias cthome='task context home'
 alias ctnone='task context none'
@@ -144,5 +152,16 @@ export COCOS_TEMPLATES_ROOT=/home/mozilla-tpe/Programs/cocos2d-x-3.8.1/cocos2d-x
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 
 # Add environment variable ANT_ROOT for cocos2d-x
-export ANT_ROOT=/usr/share/ant/bin
-export PATH=$ANT_ROOT:$PATH
+#export ANT_ROOT=/usr/share/ant/bin
+#export PATH=$ANT_ROOT:$PATH
+
+# Add environment variable ANDROID_SDK_ROOT for cocos2d-x
+#export ANDROID_SDK_ROOT=/home/mozilla-tpe/Apps/android-sdk-linux
+#export ANDROID_HOME=/home/mozilla-tpe/Apps/android-sdk-linux/
+#export NDK_ROOT=/home/mozilla-tpe/Apps/android-ndk-r10e
+
+PATH="/home/mozilla-tpe/perl5/bin${PATH+:}${PATH}"; export PATH;
+PERL5LIB="/home/mozilla-tpe/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/mozilla-tpe/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/mozilla-tpe/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/mozilla-tpe/perl5"; export PERL_MM_OPT;

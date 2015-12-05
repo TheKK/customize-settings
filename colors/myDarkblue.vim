@@ -61,6 +61,8 @@ hi Statement	ctermfg=33 cterm=none guifg=#ffff60 gui=none
 hi PreProc	ctermfg=13 guifg=#ff80ff gui=none cterm=none
 hi Underlined	cterm=underline term=underline
 
+hi SpellCap ctermfg=red ctermbg=black cterm=bold,underline
+
 "TagHighlight config
 	"c:CTagsClass
 	"d:CTagsDefinedName

@@ -1,5 +1,6 @@
-"3.9 (created: 2015/02/15 15:49:05)
+"3.10.1 (created: 2015/11/06 10:30:06)
 
+nmap T :emenu<Space>File.開新隱私分頁<Return>
 set hintchars=hjklasdfgyuiopqwertnmzxcvb
 source! /home/mozilla-tpe/.vimperatorrc.local
 

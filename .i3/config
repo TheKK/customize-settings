@@ -53,6 +53,8 @@ bindsym $mod+Shift+l move right
 # move workspace to another screen
 bindsym $mod+x move workspace to output right
 bindsym $mod+z focus output right
+
+# move focus to other screen
 bindsym $mod+Up focus output up
 bindsym $mod+Left focus output left
 bindsym $mod+Right focus output right
@@ -66,7 +68,7 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
-bindsym $mod+c move absolute position center
+bindsym $mod+c move position center
 bindsym $mod+Shift+s exec "sleep 1 && xset dpms force off"
 
 # change container layout (stacked, tabbed, toggle split)
@@ -86,12 +88,16 @@ bindsym $mod+a focus parent
 # focus the child container
 bindsym $mod+q focus child
 
+# Disable wheel scrolling in tabs
+bindsym button4 nop
+bindsym button5 nop
+
 # workspaces
-set $WS1 1: 
+set $WS1 1: 
 set $WS2 2: 
 set $WS3 3: 
 set $WS4 4: 
-set $WS5 5: 
+set $WS5 5: 
 set $WS6 6: 
 set $WS7 7: 
 set $WS8 8: 
@@ -119,8 +125,8 @@ bindsym $mod+Shift+8 move container to workspace $WS8
 bindsym $mod+Shift+9 move container to workspace $WS9
 
 # move firefox console to bigger screen
-assign [title="Console.*"] "$WS2"
 workspace "$WS2" output VGA1
+workspace "$WS9" output HDMI1
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -130,6 +136,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
@@ -146,8 +153,6 @@ mode "resize" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
-bindsym $mod+r mode "resize"
 
 bindsym $mod+F2 move scratchpad
 bindsym $mod+F1 scratchpad show
@@ -167,8 +172,6 @@ new_window normal
 new_float normal
 focus_follows_mouse no
 
-workspace_auto_back_and_forth yes
-
 bindsym $mod+F9 border normal
 bindsym $mod+F10 border 1pixel
 bindsym $mod+F11 border none
@@ -178,6 +181,7 @@ bindsym $mod+n workspace prev_on_output
 bindsym $mod+m workspace next_on_output
 
 popup_during_fullscreen leave_fullscreen
+workspace_auto_back_and_forth yes
 
 #Sound control
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +5%
@@ -191,12 +195,16 @@ bindsym XF86MonBrightnessUp exec light -A 5
 
 #Egg
 bindsym Control+Mod1+k exec "espeak -s 140 -v zh '你怎麽找到我的 這不可能啊 我明明躲得很好'"
+
 #Lockscreen
-bindsym Control+Mod1+l exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u
+bindsym Control+Mod1+l exec ~/.i3/lock.sh
 
 #Rotate screen
 bindsym Control+Mod1+r exec xrandr --output VGA1 --rotate left
 bindsym Control+Mod1+n exec xrandr --output VGA1 --rotate normal
+
+bindsym Control+Mod1+Shift+r exec xrandr --output HDMI1 --rotate left
+bindsym Control+Mod1+Shift+n exec xrandr --output HDMI1 --rotate normal
 
 #Suspend system
 bindsym Control+Mod1+s exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u && systemctl suspend
@@ -204,10 +212,10 @@ bindsym Control+Mod1+s exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        #status_command ~/.i3/myI3Status.sh
-        status_command i3status
+  #status_command ~/.i3/myI3Status.sh
+  status_command i3status
 	position top
-	font pango: Electrolize 10, Icon 10
+	font pango: Electrolize 10, FontAwesome 10
         colors {
             background #242C33
             statusline #FFFFFF
@@ -218,6 +226,11 @@ bar {
             urgent_workspace #444444 #080808 #EA4C59
         }
 	tray_output primary
+  separator_symbol "|"
+
+  # Disable wheel scrolling in i3 bar
+  bindsym button4 nop
+  bindsym button5 nop
 }
 
 # Startup applications
