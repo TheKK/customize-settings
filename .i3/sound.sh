@@ -1,27 +1,39 @@
 #!/bin/bash
 
+SINK_NO=1
+
+sendNotify()
+{
+        notify-send -t 1 "$1"
+}
+
 if [ $1 == "raise" ]; then
-	amixer -q sset Master 5%+
+        pactl set-sink-mute $SINK_NO false
+        pactl set-sink-volume $SINK_NO +5%
 
 	Msg="Master Vol:"
-	Vol=$(amixer get Master | egrep -o "[0-9]+%")
-	notify-send -t 1 "$Msg $Vol"
+        Vol=$(pactl list sinks | sed -n -e "/Sink #$SINK_NO/,\$p" | grep '^\sVolume:' | awk '{print $5}')
 
-elif [ $1 == "down" ]; then
-	amixer -q sset Master 5%-
+        sendNotify "$Msg $Vol"
+
+elif [ $1 == "lower" ]; then
+        pactl set-sink-mute $SINK_NO false
+        pactl set-sink-volume $SINK_NO -5%
 
 	Msg="Master Vol:"
-	Vol=$(amixer get Master | egrep -o "[0-9]+%")
-	notify-send -t 1 "$Msg $Vol"
+        Vol=$(pactl list sinks | sed -n -e "/Sink #$SINK_NO/,\$p" | grep '^\sVolume:' | awk '{print $5}')
 
-elif [ $1 == "mute" ]; then
-	amixer sset Master toggle
-	amixer get Master | grep -P "\[on\]"
+	sendNotify "$Msg $Vol"
 
-	if [ $? == "1" ]; then
-		notify-send -t 1 "Mute"
+elif [ $1 == "toggleMute" ]; then
+        pactl set-sink-mute $SINK_NO toggle
+
+        Muted=$(pactl list sinks | sed -n -e "/Sink #$SINK_NO/,\$p" | grep '^\sMute' | awk '{print $2}')
+
+	if [ $Muted == "yes" ]; then
+		sendNotify "Muted"
 	else
-		notify-send -t 1 "Play"
+		sendNotify "Unmuted"
 	fi
 fi
 

@@ -1,7 +1,23 @@
-"3.10.1 (created: 2015/11/06 10:30:06)
+"3.10.1 (created: 2015/08/25 00:41:59)
 
+highlight Hint font-family: Ubuntu; font-size: 12px; font-weight: bold; text-transform: uppercase; color: white; background-color: gray; border-color: ButtonShadow; border-width: 0px; border-style: solid; padding: 1px 1px 1px 1px; 
+highlight HintActive background-color: #5191f7; color: black;
+highlight HintElem background-color: #f47546;  color: black;
 nmap T :emenu<Space>File.開新隱私分頁<Return>
 set hintchars=hjklasdfgyuiopqwertnmzxcvb
-source! /home/mozilla-tpe/.vimperatorrc.local
+set hintmatching=fuzzy
+source! /home/kk/.vimperatorrc.local
+
+javascript <<EOB
+function exDownload() {
+  var url = content.location.href;
+  var output = ".out";
+  var script = "/home/kk/Codes/javascript/exhenhen/run.sh";
+  var cmd = ":!" + script + " " + url + " " + output;
+  liberator.execute(cmd);
+}
+EOB
+
+" command! ex javascript exDownload()
 
 " vim: set ft=vimperator:

@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
-font pango:Electrolize 10
+font pango:Electrolize 9
 
 # The font above is very space-efficient, that is, it looks good, sharp and
 # clear in small sizes. However, if you need a lot of unicode glyphs or
@@ -24,19 +24,20 @@ font pango:Electrolize 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# Set title show for each program
+for_window [class = ".*"] title_format "%class"
+
 # start a terminal
 bindsym $mod+Return exec terminator
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcher)
-bindsym $mod+d exec "dmenu_run -b -i -l 15 -p '>_' -fn 'Hermit-10' -nb '#444444' -nf '#888888' -sb '#732ec7' "
+# start dmenu (a program launcherj
+set $dmenuParams -b -i -l 15 -p '>_' -fn 'Hermit-9'
 
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
- #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu $dmenuParams"
+bindsym $mod+Shift+d exec --no-startup-id dmenu_run $dmenuParams
 
 # change focus
 bindsym $mod+h focus left
@@ -93,6 +94,7 @@ bindsym button4 nop
 bindsym button5 nop
 
 # workspaces
+set $WS0 0: 0
 set $WS1 1: 
 set $WS2 2: 
 set $WS3 3: 
@@ -103,6 +105,7 @@ set $WS7 7: 
 set $WS8 8: 
 set $WS9 9: 
 
+bindsym $mod+0 workspace $WS0
 bindsym $mod+1 workspace $WS1
 bindsym $mod+2 workspace $WS2
 bindsym $mod+3 workspace $WS3
@@ -114,6 +117,7 @@ bindsym $mod+8 workspace $WS8
 bindsym $mod+9 workspace $WS9
 
 # move focused container to workspace
+bindsym $mod+Shift+0 move container to workspace $WS0
 bindsym $mod+Shift+1 move container to workspace $WS1
 bindsym $mod+Shift+2 move container to workspace $WS2
 bindsym $mod+Shift+3 move container to workspace $WS3
@@ -172,9 +176,9 @@ new_window normal
 new_float normal
 focus_follows_mouse no
 
-bindsym $mod+F9 border normal
-bindsym $mod+F10 border 1pixel
-bindsym $mod+F11 border none
+bindsym $mod+F10 border none
+bindsym $mod+F11 border 1pixel
+bindsym $mod+F12 border normal
 
 #Workspace move
 bindsym $mod+n workspace prev_on_output
@@ -184,10 +188,10 @@ popup_during_fullscreen leave_fullscreen
 workspace_auto_back_and_forth yes
 
 #Sound control
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +5%
-bindsym XF86AudioLowerVolume exec pactl -- set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -5%
-bindsym XF86AudioMute exec pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle
-bindsym Print exec scrot -e 'mv $f ~/Picture/SS'
+bindsym XF86AudioRaiseVolume exec ~/.i3/sound.sh raise
+bindsym XF86AudioLowerVolume exec ~/.i3/sound.sh lower
+bindsym XF86AudioMute exec ~/.i3/sound.sh toggleMute
+bindsym Print exec scrot -e 'mv $f ~/Pictures/screenshots/$f'
 
 #Brightness control
 bindsym XF86MonBrightnessDown exec light -U 5
@@ -212,10 +216,9 @@ bindsym Control+Mod1+s exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-  #status_command ~/.i3/myI3Status.sh
   status_command i3status
 	position top
-	font pango: Electrolize 10, FontAwesome 10
+	font pango: FontAwesome 9, Electrolize 9
         colors {
             background #242C33
             statusline #FFFFFF
@@ -236,8 +239,10 @@ bar {
 # Startup applications
 exec --no-startup-id xse -dpms	#Trun off DPMS
 exec --no-startup-id xset s off
-exec --no-startup-id feh --bg-fill /home/kk/Picture/Wallpapers/cat.jpg
+exec --no-startup-id feh --bg-fill -z /home/kk/Pictures/wallpapers
 exec --no-startup-id unclutter
 exec --no-startup-id ibus-daemon
 exec --no-startup-id nm-applet
-exec --no-startup-id unity-settings-daemon
+exec --no-startup-id xrandr --dpi 140
+exec --no-startup-id dunst
+exec --no-startup-id ~/.i3/synapticsCfg.sh

@@ -36,30 +36,7 @@ autocmd BufNewFile,BufRead,BufEnter *.md setlocal spell textwidth=72 syntax=mark
 autocmd FileType javascript set ai sw=2 ts=2 sta et fo=croql
 
 set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
-
-"Session helper"
-"fu! SaveSess()
-    "execute 'mksession! ' . getcwd() . '/.session.vim'
-"endfunction
-
-"fu! RestoreSess()
-    "execute 'so ' . getcwd() . '/.session.vim'
-"endfunction
-"fu! RestoreSess()
-"if filereadable(getcwd() . '/.session.vim')
-    "execute 'so ' . getcwd() . '/.session.vim'
-    "if bufexists(1)
-        "for l in range(1, bufnr('$'))
-            "if bufwinnr(l) == -1
-                "exec 'sbuffer ' . l
-            "endif
-        "endfor
-    "endif
-"endif
-"endfunction
-
-"/*autocmd VimLeave * call SaveSess()*/
-"/*autocmd VimEnter * call RestoreSess()*/
+set list
 
 "My Key Mapping"
 noremap <silent><F1> :JSHint moz:true esnext:true<CR>

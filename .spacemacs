@@ -28,21 +28,21 @@ values."
      xkcd
      html
      auto-completion
-     better-defaults
+     ;; better-defaults
      emacs-lisp
-     ;; git
-     ;; github
+     git
+     github
      emoji
      latex
      org
-     (ycmd :variables ycmd-server-command '("python" "/home/mozilla-tpe/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd"))
+     (ycmd :variables ycmd-server-command '("python2" "/home/kk/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd"))
      markdown
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
      spell-checking
      syntax-checking
-     ;; version-control
+     ;;version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -101,10 +101,10 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 15
+                               :size 20
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -216,6 +216,9 @@ user code."
   (setq-default tab-width 8)
   (setq-default c-basic-indent 8)
 
+  ;; TODO ansi-term kbd
+  ;; (global-set-key (kbd "M-m a s a") '(ansi-term "/usr/bin/zsh"))
+
   ;; Js indent
   (setq-default js2-basic-offset 2)
   (setq-default js-indent-level 2)
@@ -229,7 +232,6 @@ user code."
 
   ;; C-C++ mode
   (setq-default c-c++-default-mode-for-headers 'c++-mode)
-  (powerline-default-theme)
 )
 
 (defun dotspacemacs/user-config ()
@@ -244,6 +246,8 @@ layers configuration. You are free to put any user code."
   (evil-define-key 'visual map
     (kbd "C-m") 'evil-mc-skip-and-goto-next-match
   )
+
+  ;; Evil
   (setq-default evil-want-C-u-scroll t)
 )
 
@@ -254,122 +258,48 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(Info-fontify-angle-bracketed-flag nil)
- '(ag-reuse-buffers t)
- '(ag-reuse-window nil)
- '(ansi-color-names-vector ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#657b83"])
- '(anzu-cons-mode-line-p nil)
- '(anzu-mode-line-update-function (quote spacemacs/anzu-update-mode-line))
- '(bookmark-save-flag 1)
- '(c-basic-offset 8)
- '(c-tab-always-indent (quote other))
- '(company-auto-complete nil)
- '(company-auto-complete-chars (quote (119)))
- '(company-clang-executable "/usr/bin/clang")
- '(company-dabbrev-code-everywhere t)
- '(company-dabbrev-code-ignore-case t)
- '(company-dabbrev-code-time-limit 0)
  '(company-dabbrev-downcase nil)
  '(company-dabbrev-ignore-case nil)
- '(company-dabbrev-minimum-length 1)
- '(company-dabbrev-time-limit 0)
- '(company-emoji-insert-unicode nil t)
- '(company-etags-ignore-case t)
- '(company-frontends (quote (company-pseudo-tooltip-unless-just-one-frontend)))
+ '(company-emoji-insert-unicode nil)
  '(company-global-modes t)
- '(company-idle-delay 0)
+ '(company-idle-delay 0.2)
  '(company-minimum-prefix-length 1)
+ '(company-racer-executable "racer")
+ '(company-racer-rust-src "/home/kk/Programs/rust/src")
  '(company-require-match nil)
- '(company-tooltip-flip-when-above t)
- '(company-transformers (quote (spacemacs//company-transformer-cancel company-sort-by-occurrence)))
- '(company-ycmd-enable-fuzzy-matching t)
- '(compilation-message-face (quote default))
- '(cua-global-mark-cursor-color "#2aa198")
- '(cua-normal-cursor-color "#839496")
- '(cua-overwrite-cursor-color "#b58900")
- '(cua-read-only-cursor-color "#859900")
- '(current-language-environment "English")
- '(desktop-modes-not-to-save (quote (tags-table-mode)))
- '(desktop-save t)
+ '(company-transformers
+   (quote
+    (spacemacs//company-transformer-cancel company-sort-by-occurrence)))
+ '(desktop-save (quote ask))
  '(desktop-save-mode t)
- '(evil-auto-indent t)
+ '(evil-mc-cursor-overlay-priority 201)
  '(evil-want-C-u-scroll t)
- '(flycheck-checkers (quote (ycmd ada-gnat asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd emacs-lisp emacs-lisp-checkdoc erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy jade javascript-jshint javascript-eslint javascript-gjslint javascript-jscs javascript-standard json-jsonlint json-python-json less luacheck lua perl perl-perlcritic php php-phpmd php-phpcs puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-rubylint ruby ruby-jruby rust sass scala scala-scalastyle scss-lint scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim sql-sqlint tex-chktex tex-lacheck texinfo verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
- '(flycheck-display-errors-delay 0)
- '(flycheck-display-errors-function (quote flycheck-display-error-messages))
- '(flycheck-emacs-lisp-load-path (quote inherit))
- '(flycheck-help-echo-function (quote flycheck-help-echo-all-error-messages))
- '(flycheck-idle-change-delay 0.4)
- '(flycheck-standard-error-navigation nil)
+ '(flycheck-display-errors-delay 0.1)
+ '(flycheck-pos-tip-timeout 0)
+ '(global-auto-complete-mode t)
  '(global-company-mode t)
  '(global-evil-mc-mode t)
- '(global-hl-line-mode t)
- '(global-page-break-lines-mode t)
- '(global-ycmd-mode t)
- '(golden-ratio-exclude-modes (quote ("bs-mode" "calc-mode" "ediff-mode" "dired-mode" "gud-mode" "gdb-locals-mode" "gdb-registers-mode" "gdb-breakpoints-mode" "gdb-threads-mode" "gdb-frames-mode" "gdb-inferior-io-mode" "gud-mode" "gdb-inferior-io-mode" "gdb-disassembly-mode" "gdb-memory-mode" "restclient-mode" "speedbar-mode" ansi-term)))
+ '(global-ycmd-mode nil)
+ '(golden-ratio-adjust-factor 1)
+ '(golden-ratio-auto-scale t)
  '(golden-ratio-mode t)
- '(google-translate-default-source-language "en")
- '(google-translate-default-target-language "zh-TW")
- '(google-translate-pop-up-buffer-set-focus t)
- '(helm-M-x-fuzzy-match t)
- '(helm-apropos-fuzzy-match t)
- '(helm-buffers-end-truncated-string ">")
- '(helm-buffers-fuzzy-matching t)
- '(helm-file-cache-fuzzy-match t)
- '(helm-lisp-fuzzy-completion t)
- '(helm-locate-fuzzy-match "/usr/bin/locate")
- '(helm-recentf-fuzzy-match t)
- '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
- '(highlight-symbol-colors (--map (solarized-color-blend it "#002b36" 0.25) (quote ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
- '(highlight-symbol-foreground-color "#93a1a1")
- '(highlight-tail-colors (quote (("#073642" . 0) ("#546E00" . 20) ("#00736F" . 30) ("#00629D" . 50) ("#7B6000" . 60) ("#8B2C02" . 70) ("#93115C" . 85) ("#073642" . 100))))
- '(hl-bg-colors (quote ("#7B6000" "#8B2C02" "#990A1B" "#93115C" "#3F4D91" "#00629D" "#00736F" "#546E00")))
- '(hl-fg-colors (quote ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
- '(indent-tabs-mode t)
- '(initial-scratch-message nil)
+ '(golden-ratio-recenter t)
+ '(helm-autoresize-min-height 15)
+ '(helm-show-completion-min-window-height 15)
  '(ispell-dictionary "english")
  '(ispell-highlight-face (quote flyspell-incorrect))
- '(magit-diff-use-overlays nil)
- '(message-log-max 16384)
- '(mode-line-in-non-selected-windows nil)
  '(paradox-github-token t)
- '(pos-tip-background-color "#073642")
- '(pos-tip-foreground-color "#93a1a1")
- '(projectile-project-root-files (quote ("rebar.config" "project.clj" "build.boot" "SConstruct" "pom.xml" "build.sbt" "gradlew" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml")))
- '(projectile-project-root-files-top-down-recurring (quote (".svn" "CVS" "Makefile" "CMakefile.txt")))
- '(savehist-autosave-interval nil)
- '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
- '(standard-indent 8)
- '(tab-always-indent (quote complete))
- '(tab-width 8)
- '(term-default-bg-color "#002b36")
- '(term-default-fg-color "#839496")
- '(truncate-lines t)
- '(truncate-partial-width-windows nil)
- '(use-package-inject-hooks t)
- '(vc-annotate-background nil)
- '(vc-annotate-color-map (quote ((20 . "#dc322f") (40 . "#c85d17") (60 . "#be730b") (80 . "#b58900") (100 . "#a58e00") (120 . "#9d9100") (140 . "#959300") (160 . "#8d9600") (180 . "#859900") (200 . "#669b32") (220 . "#579d4c") (240 . "#489e65") (260 . "#399f7e") (280 . "#2aa198") (300 . "#2898af") (320 . "#2793ba") (340 . "#268fc6") (360 . "#268bd2"))))
- '(vc-annotate-very-old-color nil)
- '(wcheck-language "english")
- '(wcheck-language-data (quote (("english" (program . "/usr/bin/aspell")))))
+ '(racer-rust-src-path "/home/kk/Programs/rust/src")
+ '(web-mode-attr-indent-offset 2)
  '(web-mode-code-indent-offset 2)
  '(web-mode-css-indent-offset 2)
  '(web-mode-markup-indent-offset 2)
  '(web-mode-sql-indent-offset 2)
- '(weechat-color-list (quote (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83")))
- '(x-underline-at-descent-line t)
- '(ycmd-extra-conf-handler (quote load))
- '(ycmd-global-modes (quote all))
- '(ycmd-server-command (quote ("python" "/home/mozilla-tpe/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd"))))
+ '(ycmd-extra-conf-handler (quote load)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(column-marker-1 ((t (:background "black" :weight bold))) t)
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
- '(evil-mc-cursor-default-face ((t (:background "magenta3" :foreground "black"))))
- '(evil-mc-region-face ((t (:background "magenta4" :foreground "black"))))
- '(font-lock-fic-face ((t (:stipple nil :background "cyan" :foreground "dim gray" :inverse-video nil :underline t :slant normal :weight bold))) t)
- '(hl-line ((t (:background "#212026")))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
