@@ -27,7 +27,6 @@ update() {
                 local src=${TARGETS[i]}
                 local dest=$(echo "$src" | sed "s/\/home\/$USER/$PWD/g")
 
-                #printf "copy from %s to %s\n" "$src" "$dest"
                 if [[ -d "$src" ]]; then
                         printf "copy from %s/* to %s\n" "$src" "$dest"
                         mkdir -p $dest
@@ -48,8 +47,14 @@ deploy() {
                 local dest=${TARGETS[i]}
                 local src=$(echo "$dest" | sed "s/\/home\/$USER/$PWD/g")
 
-                printf "copy from %s to %s\n" "$src" "$dest"
-                cp -r "$src" "$dest"
+                if [[ -d "$src" ]]; then
+                        printf "copy from %s/* to %s\n" "$src" "$dest"
+                        mkdir -p $dest
+                        cp -r "$src"/* "$dest"
+                elif [[ -f "$src" ]]; then
+                        printf "copy from %s to %s\n" "$src" "$dest"
+                        cp -r "$src" "$dest"
+                fi
         done
 
         echo "Done! Jolly good!!"
