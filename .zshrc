@@ -45,10 +45,13 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git hg tmux catimg nyan zsh-syntax-highlighting colored-man colorize
+plugins=(git hg tmux catimg nyan colored-man colorize
 cp extract fasd gitignore themes adb)
 
 source $ZSH/oh-my-zsh.sh
+
+# Syntax highlihgt
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # User configuration
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
@@ -138,6 +141,14 @@ alias cthome='task context home'
 alias ctnone='task context none'
 
 export MYVIMRC=~/.vimrc
+
+# Multi monitor setting
+alias single_edp_normal="$HOME/.screenlayout/single_edp_normal.sh"
+alias multi_dp_right_rotate_left="$HOME/.screenlayout/multi_dp_right_rotate_left.sh"
+alias multi_dp_mirror="$HOME/.screenlayout/multi_dp_mirror.sh"
+
+# GAMES!
+alias iidx="$HOME/Programs/angolmois/normal.sh n7"
 
 # Welcom message
 toilet --metal -f future -t "Welcom to KK's world"
