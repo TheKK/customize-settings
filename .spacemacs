@@ -256,7 +256,7 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(company-dabbrev-downcase nil)
  '(company-dabbrev-ignore-case nil)
- '(company-emoji-insert-unicode nil)
+ '(company-emoji-insert-unicode nil t)
  '(company-global-modes t)
  '(company-idle-delay 0.2)
  '(company-minimum-prefix-length 1)
@@ -275,7 +275,7 @@ layers configuration. You are free to put any user code."
  '(global-auto-complete-mode t)
  '(global-company-mode t)
  '(global-evil-mc-mode t)
- '(global-ycmd-mode nil)
+ '(global-ycmd-mode t)
  '(golden-ratio-adjust-factor 1)
  '(golden-ratio-auto-scale t)
  '(golden-ratio-mode t)
@@ -291,7 +291,11 @@ layers configuration. You are free to put any user code."
  '(web-mode-css-indent-offset 2)
  '(web-mode-markup-indent-offset 2)
  '(web-mode-sql-indent-offset 2)
- '(ycmd-extra-conf-handler (quote load)))
+ '(ycmd-extra-conf-handler (quote load))
+ '(ycmd-rust-src-path "/home/kk/Programs/rust/src/")
+ '(ycmd-server-command
+   (quote
+    ("python2" "/home/kk/.vim/bundle/YouCompleteMe/third_party/ycmd"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

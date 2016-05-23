@@ -3,6 +3,7 @@
 PWD=$(dirname "$0")
 
 TARGETS=(
+        ~/.ycm_extra_conf.py
         ~/.vim/colors
         ~/.vimrc
         ~/.zshrc
