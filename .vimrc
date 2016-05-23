@@ -14,12 +14,6 @@ set tabstop=8
 set softtabstop=8
 set expandtab
 
-"set hlsearch
-"augroup vimrc_autocmds
-        "autocmd BufEnter *.cpp,*.c*.h,*.hpp highlight OverLength ctermbg=63 ctermfg=white guibg=#111111
-        "autocmd BufEnter *.cpp,*.c*.h,*.hpp match OverLength /\%81v.*/
-"augroup END
-
 fu! Multiple_cursors_before()
         let s:old_ycm_whitelist = g:ycm_filetype_whitelist
         let g:ycm_filetype_whitelist = {}
@@ -77,6 +71,7 @@ Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'guns/xterm-color-table.vim.git'
 "Bundle 'Rip-Rip/clang_complete'
 Bundle 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Bundle 'tpope/vim-fugitive.git'
 Bundle 'adimit/prolog.vim'
 Bundle 'kristijanhusak/vim-multiple-cursors'
@@ -105,6 +100,9 @@ Bundle 'elzr/vim-json'
 Bundle 'airblade/vim-gitgutter'
 "Bundle 'jeaye/color_coded'
 Bundle 'rdnetto/YCM-Generator'
+Bundle 'racer-rust/vim-racer'
+Bundle 'cespare/vim-toml'
+Bundle 'dracula/vim'
 " ...
 
 call vundle#end()
@@ -185,4 +183,6 @@ let g:ctrlp_open_new_file = 't'
 let g:ctrlp_regexp = 0
 "let g:ctrlp_max_files = 0
 
-"noremap <C-P> :Unite -silent -direction=below -start-insert file_rec<cr>
+" Racer
+let g:racer_cmd = "/home/kk/.cargo/bin/racer"
+let $RUST_SRC_PATH = "/home/kk/Programs/rust/src"

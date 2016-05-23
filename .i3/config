@@ -241,7 +241,7 @@ exec --no-startup-id xse -dpms        #Trun off DPMS
 exec --no-startup-id xset s off
 exec --no-startup-id feh --bg-fill -z /home/kk/Pictures/wallpapers
 exec --no-startup-id unclutter
-exec --no-startup-id xrandr --dpi 140
 exec --no-startup-id dunst
 exec --no-startup-id ~/.i3/synapticsCfg.sh
+exec --no-startup-id ~/.i3/xps13Setup.sh
 exec --no-startup-id ~/.screenlayout/single_edp_normal.sh

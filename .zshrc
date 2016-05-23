@@ -46,7 +46,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git hg tmux catimg nyan colored-man colorize
-cp extract fasd gitignore themes adb)
+cp extract fasd gitignore adb)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -55,11 +55,11 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # User configuration
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
-export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin
-export PATH=$PATH:$HOME/.cabal/bin
-export PATH=$PATH:$HOME/.cargo/bin
-export PATH=$PATH:$HOME/.go/bin
-export PATH=$PATH:$HOME/Apps/git-cinnabar
+export PATH="$PATH:$HOME/.gem/ruby/2.2.0/bin"
+export PATH="$PATH:$HOME/.cabal/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$PATH:$HOME/.go/bin"
+export PATH="$PATH:$HOME/Apps/git-cinnabar"
 
 # # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -84,6 +84,7 @@ export EDITOR=nvim
 export HAXE_STD_PATH=/opt/haxe/std	#for haxe
 export GCC_COLORS=1
 export RUST_SRC_PATH=~/Programs/rust/src
+export CARGO_HOME=~/.cargo/
 #source ~/Programs/emsdk_portable/emsdk_env.sh > /dev/null
 
 # My startup action
@@ -148,7 +149,7 @@ alias multi_dp_right_rotate_left="$HOME/.screenlayout/multi_dp_right_rotate_left
 alias multi_dp_mirror="$HOME/.screenlayout/multi_dp_mirror.sh"
 
 # GAMES!
-alias iidx="$HOME/Programs/angolmois/normal.sh n7"
+alias iidx="$HOME/Programs/angolmois/normal.sh"
 
 # Welcom message
 toilet --metal -f future -t "Welcom to KK's world"
@@ -171,5 +172,5 @@ export GDK_DPI_SCALE=1.2
 
 # Add environment variable ANDROID_SDK_ROOT for cocos2d-x
 #export ANDROID_SDK_ROOT=/home/mozilla-tpe/Apps/android-sdk-linux
-#export ANDROID_HOME=/home/mozilla-tpe/Apps/android-sdk-linux/
+export ANDROID_HOME="/home/kk/Programs/android/android-sdk-linux"
 #export NDK_ROOT=/home/mozilla-tpe/Apps/android-ndk-r10e
