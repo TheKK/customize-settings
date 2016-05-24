@@ -194,8 +194,8 @@ bindsym XF86AudioMute exec ~/.i3/sound.sh toggleMute
 bindsym Print exec scrot -e 'mv $f ~/Pictures/screenshots/$f'
 
 #Brightness control
-bindsym XF86MonBrightnessDown exec light -U 5
-bindsym XF86MonBrightnessUp exec light -A 5
+bindsym XF86MonBrightnessDown exec light -U 5 && notify-send "brigh $(light)"
+bindsym XF86MonBrightnessUp exec light -A 5 && notify-send "brigh $(light)"
 
 #Egg
 bindsym Control+Mod1+k exec "espeak -s 140 -v zh '你怎麽找到我的 這不可能啊 我明明躲得很好'"

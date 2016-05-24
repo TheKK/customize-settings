@@ -35,7 +35,7 @@ values."
      emoji
      latex
      org
-     (ycmd :variables ycmd-server-command '("python2" "/home/kk/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd"))
+     ycmd
      markdown
      (shell :variables
             shell-default-height 30
@@ -226,6 +226,16 @@ user code."
   ;; ycmd
   (add-hook 'c++-mode-hook 'ycmd-mode)
 
+  ;; Rust mode
+  (add-hook 'rust-mode-hook 'ycmd-mode)
+  (ycmd-extra-conf-handler (quote load))
+  (ycmd-global-config "/home/kk/.ycm_extra_conf.py")
+  (ycmd-racerd-binary-path "/home/kk/.cargo/bin/racer")
+  (ycmd-rust-src-path "/home/kk/Programs/rust/src/")
+  (ycmd-server-command
+    (quote
+     ("python" "/home/kk/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd")))
+
   ;; C-C++ mode
   (setq-default c-c++-default-mode-for-headers 'c++-mode)
 )
@@ -260,7 +270,7 @@ layers configuration. You are free to put any user code."
  '(company-global-modes t)
  '(company-idle-delay 0.2)
  '(company-minimum-prefix-length 1)
- '(company-racer-executable "racer")
+ '(company-racer-executable "/home/kk/.cargo/bin/racer")
  '(company-racer-rust-src "/home/kk/Programs/rust/src")
  '(company-require-match nil)
  '(company-transformers
@@ -292,10 +302,12 @@ layers configuration. You are free to put any user code."
  '(web-mode-markup-indent-offset 2)
  '(web-mode-sql-indent-offset 2)
  '(ycmd-extra-conf-handler (quote load))
+ '(ycmd-global-config "/home/kk/.ycm_extra_conf.py")
+ '(ycmd-racerd-binary-path "/home/kk/.cargo/bin/racer")
  '(ycmd-rust-src-path "/home/kk/Programs/rust/src/")
  '(ycmd-server-command
    (quote
-    ("python2" "/home/kk/.vim/bundle/YouCompleteMe/third_party/ycmd"))))
+    ("python" "/home/kk/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
