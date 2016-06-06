@@ -43,79 +43,56 @@ noremap <F6> :lprevious<CR>
 
 noremap <F7> gT
 noremap <F8> gt
-noremap <C-F7> :tabmove -1<cr>
-noremap <C-F8> :tabmove +1<cr>
+noremap <S-F7> :tabmove -1<cr>
+noremap <S-F8> :tabmove +1<cr>
 
 noremap <F9> :TagbarToggle<cr>
 noremap <F10> :set list!<cr>
 
 noremap <C-b> :CtrlPBuffer<cr>
 
+" Plugs
+call plug#begin('~/.vim/plugged')
 
-"Vundle Pluging"
-set nocompatible              " be iMproved
-filetype off                  " required!
+Plug 'Valloric/YouCompleteMe'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'guns/xterm-color-table.vim'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'adimit/prolog.vim'
+Plug 'kristijanhusak/vim-multiple-cursors'
+Plug 'scrooloose/syntastic'
+Plug 'tikhomirov/vim-glsl'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'majutsushi/tagbar'
+Plug 'jdonaldson/vaxe'
+Plug 'sophacles/vim-processing'
+Plug 'octave.vim--'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'kien/ctrlp.vim'
+"Plug 'Shougo/unite.vim'
+Plug 'syntaxudev.vim'
+Plug 'medvid/vim-armasm'
+"Plug 'Shougo/vimproc.vim'
+"Plug 'chrisbra/Replay'
+"Plug 'ervandew/supertab'
+Plug 'nanotech/jellybeans.vim'
+Plug 'pangloss/vim-javascript'
+"Plug 'fholgado/minibufexpl.vim'
+Plug 'marijnh/tern_for_vim'
+Plug 'Shutnik/jshint2.vim'
+Plug 'rust-lang/rust.vim'
+Plug 'elzr/vim-json'
+Plug 'airblade/vim-gitgutter'
+"Plug 'jeaye/color_coded'
+Plug 'rdnetto/YCM-Generator'
+Plug 'racer-rust/vim-racer'
+Plug 'cespare/vim-toml'
+Plug 'mxw/vim-jsx'
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle
-" required
-Bundle 'gmarik/vundle.git'
-
-" My bundles here:
-"Bundle 'TagHighlight'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'scrooloose/nerdcommenter.git'
-Bundle 'guns/xterm-color-table.vim.git'
-"Bundle 'Rip-Rip/clang_complete'
-Bundle 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'adimit/prolog.vim'
-Bundle 'kristijanhusak/vim-multiple-cursors'
-"Bundle 'scrooloose/syntastic'
-Bundle 'tikhomirov/vim-glsl'
-Bundle 'octol/vim-cpp-enhanced-highlight'
-Bundle 'majutsushi/tagbar'
-Bundle 'jdonaldson/vaxe'
-Bundle 'sophacles/vim-processing'
-Bundle 'octave.vim--'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'kien/ctrlp.vim'
-"Bundle 'Shougo/unite.vim'
-Bundle 'syntaxudev.vim'
-Bundle 'medvid/vim-armasm'
-"Bundle 'Shougo/vimproc.vim'
-"Bundle 'chrisbra/Replay'
-"Bundle 'ervandew/supertab'
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'pangloss/vim-javascript'
-"Bundle 'fholgado/minibufexpl.vim'
-Bundle 'marijnh/tern_for_vim'
-Bundle 'Shutnik/jshint2.vim'
-Bundle 'wting/rust.vim'
-Bundle 'elzr/vim-json'
-Bundle 'airblade/vim-gitgutter'
-"Bundle 'jeaye/color_coded'
-Bundle 'rdnetto/YCM-Generator'
-Bundle 'racer-rust/vim-racer'
-Bundle 'cespare/vim-toml'
-Bundle 'dracula/vim'
-" ...
-
-call vundle#end()
-filetype plugin indent on     " required!
-"
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install (update) bundles
-" :BundleSearch(!) foo - search (or refresh cache first) for foo
-" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle commands are not allowed.
+call plug#end()
 
 "MY CHANGE"
 
@@ -148,15 +125,16 @@ endif
 "let g:airline_symbols.linenr = '⭡'
 
 let g:syntastic_check_on_open = 1
-let g:syntastic_cpp_checkers = ['clang', 'gcc']
-let g:syntastic_cpp_include_dirs = ['./', './include/', '../include/', '/usr/include/SDL2/']
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_auto_refresh_includes = 1
-let g:syntastic_cpp_remove_include_errors = 1
+"let g:syntastic_cpp_checkers = ['clang', 'gcc']
+"let g:syntastic_cpp_include_dirs = ['./', './include/', '../include/', '/usr/include/SDL2/']
+"let g:syntastic_cpp_check_header = 1
+"let g:syntastic_cpp_auto_refresh_includes = 1
+"let g:syntastic_cpp_remove_include_errors = 1
 let g:syntastic_enable_signs = 1
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
+"let g:syntastic_cpp_compiler = 'clang++'
+"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
 "set error or warning signs
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 
@@ -186,3 +164,6 @@ let g:ctrlp_regexp = 0
 " Racer
 let g:racer_cmd = "/home/kk/.cargo/bin/racer"
 let $RUST_SRC_PATH = "/home/kk/Programs/rust/src"
+
+" JSX syntax
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files

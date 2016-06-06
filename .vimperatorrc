@@ -6,18 +6,20 @@ highlight HintElem background-color: #f47546;  color: black;
 nmap T :emenu<Space>File.開新隱私分頁<Return>
 set hintchars=hjklasdfgyuiopqwertnmzxcvb
 set hintmatching=fuzzy
-source! /home/kk/.vimperatorrc.local
+source $HOME/.vimperatorrc.local
 
 javascript <<EOB
 function exDownload() {
   var url = content.location.href;
-  var output = ".out";
-  var script = "/home/kk/Codes/javascript/exhenhen/run.sh";
-  var cmd = ":!" + script + " " + url + " " + output;
-  liberator.execute(cmd);
+  var lab = '$HOME/Codes/javascript/exhenhen/'
+  var script = lab + 'run.sh';
+  var output = lab + '.out/';
+  var shell_cmd = 'terminator -e ' + '"' + script + ' ' + url + ' ' + output + '" 2>> /dev/null'
+  liberator.execute(':! ' + shell_cmd);
 }
 EOB
 
-" command! ex javascript exDownload()
+command uz 'source $HOME/.vimperatorrc'
+command ex javascript exDownload()
 
 " vim: set ft=vimperator:
