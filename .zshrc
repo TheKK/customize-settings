@@ -92,12 +92,22 @@ alias grep='grep --color=always'
 alias ag='ag --color'
 alias packerq='packer --noedit'
 alias uz='source ~/.zshrc'
+alias ez='vim ~/.zshrc'
 alias cat='ccat'
 alias mtr='mtr -t'
 alias vim='nvim'
 alias vi='nvim'
 alias ec='emacsclient -a emacs -n -c'
 alias nyancha='mocha --reporter nyan'
+alias toggleRustBt='
+        if [ "$RUST_BACKTRACE" -eq "1" ]; then
+                export RUST_BACKTRACE=0
+                echo "rust backtrace is [off]"
+        else
+                export RUST_BACKTRACE=1
+                echo "rust backtrace is [on]"
+        fi
+'
 
 # My GTD alias
 in()

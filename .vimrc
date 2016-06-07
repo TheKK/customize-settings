@@ -1,6 +1,10 @@
 "My Setting"
+
 syntax on
 colorscheme myDarkblue
+
+set clipboard+=unnamedplus "Share clipboard between X11 and vim
+set foldmethod=syntax
 set noswapfile
 set autowrite
 set foldmethod=indent
@@ -13,6 +17,8 @@ set cursorline
 set tabstop=8
 set softtabstop=8
 set expandtab
+set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
+set list
 
 fu! Multiple_cursors_before()
         let s:old_ycm_whitelist = g:ycm_filetype_whitelist
@@ -29,8 +35,9 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 autocmd BufNewFile,BufRead,BufEnter *.md setlocal spell textwidth=72 syntax=markdown wrap
 autocmd FileType javascript set ai sw=2 ts=2 sta et fo=croql
 
-set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
-set list
+"My command
+com! EditRc tabnew ~/.vimrc
+com! Uz source ~/.vimrc
 
 "My Key Mapping"
 noremap <silent><F1> :JSHint moz:true esnext:true<CR>
@@ -167,3 +174,7 @@ let $RUST_SRC_PATH = "/home/kk/Programs/rust/src"
 
 " JSX syntax
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+
+" Rust.vim
+let g:rustfmt_fail_silently = 1
+let g:rustfmt_autosave = 1
