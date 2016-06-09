@@ -33,11 +33,12 @@ bindsym $mod+Return exec terminator
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcherj
+# start dmenu (a program launcher)
 set $dmenuParams -b -i -l 15 -p '>_' -fn 'Hermit-9'
 
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu $dmenuParams"
-bindsym $mod+Shift+d exec --no-startup-id dmenu_run $dmenuParams
+bindsym $mod+d exec --no-startup-id dmenu_run $dmenuParams
+bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu $dmenuParams"
+bindsym $mod+Shift+p exec --no-startup-id passdmenu $dmenuParams
 
 # change focus
 bindsym $mod+h focus left

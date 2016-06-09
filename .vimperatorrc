@@ -14,7 +14,7 @@ function exDownload() {
   var lab = '$HOME/Codes/javascript/exhenhen/'
   var script = lab + 'run.sh';
   var output = lab + '.out/';
-  var shell_cmd = 'terminator -e ' + '"' + script + ' ' + url + ' ' + output + '" 2>> /dev/null'
+  var shell_cmd = 'terminator -e ' + '"' + script + ' ' + url + ' ' + output + '" && read 2>> /dev/null'
   liberator.execute(':! ' + shell_cmd);
 }
 EOB
