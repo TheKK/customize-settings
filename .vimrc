@@ -32,7 +32,7 @@ endf
 autocmd BufNewFile,BufRead,BufEnter *.frag,*.vert,*.fp,*.vp,*.glsl,*.vs,*.fs set syntax=glsl
 autocmd FileType mail setl spell fo=wantq1 smc=0
 autocmd Filetype gitcommit setlocal spell textwidth=72
-autocmd BufNewFile,BufRead,BufEnter *.md setlocal spell textwidth=72 syntax=markdown wrap
+autocmd BufNewFile,BufRead,BufEnter *.md setlocal spell textwidth=81 syntax=markdown wrap
 autocmd FileType javascript set ai sw=2 ts=2 sta et fo=croql
 
 "My command
@@ -91,7 +91,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'marijnh/tern_for_vim'
 Plug 'Shutnik/jshint2.vim'
 Plug 'rust-lang/rust.vim'
-Plug 'elzr/vim-json'
+"Plug 'elzr/vim-json'
 Plug 'airblade/vim-gitgutter'
 "Plug 'jeaye/color_coded'
 Plug 'rdnetto/YCM-Generator'

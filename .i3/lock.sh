@@ -1,6 +1,9 @@
 #!/usr/bin/env sh
 
+tmpFile="/tmp/lockImg.png"
+
 # This is fun!
-scrot -m /tmp/lockImg.png
-convert /tmp/lockImg.png -blur 0x06 /tmp/lockImg.png
-i3lock -i /tmp/lockImg.png -p win -e
+scrot -m "$tmpFile"
+convert "$tmpFile" -sepia-tone 75% -noise 5% "$tmpFile"
+composite -gravity SouthEast -geometry +40+40 ~/Pictures/lockscreen/jojo.png "$tmpFile" "$tmpFile"
+i3lock -i "$tmpFile" -p win -e

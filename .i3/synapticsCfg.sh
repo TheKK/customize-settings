@@ -22,3 +22,4 @@ synclient LockedDrags=1
 synclient LockedDragTimeout=350
 
 synclient MinSpeed=1.2
+synclient MaxSpeed=2.2
