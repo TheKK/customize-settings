@@ -191,8 +191,9 @@ workspace_auto_back_and_forth yes
 
 #Sound control
 bindsym XF86AudioRaiseVolume exec ~/.i3/sound.sh raise
-bindsym XF86AudioLowerVolume exec ~/.i3/sound.sh lower
+bindsym XF86AudioLowerVolume exec ~/.i3/sound.sh decrease
 bindsym XF86AudioMute exec ~/.i3/sound.sh toggleMute
+bindsym $mod+Shift+v exec --no-startup-id ~/.i3/sound.sh dmenu-set
 bindsym Print exec scrot -e 'mv $f ~/Pictures/screenshots/$f'
 
 #Brightness control
