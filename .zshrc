@@ -57,9 +57,9 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
 export PATH="$PATH:$HOME/.gem/ruby/2.2.0/bin"
 export PATH="$PATH:$HOME/.cabal/bin"
-export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$PATH:$HOME/.go/bin"
 export PATH="$PATH:$HOME/Apps/git-cinnabar"
+source ~/.cargo/env
 
 # # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then

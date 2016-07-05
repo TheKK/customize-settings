@@ -14,6 +14,7 @@ TARGETS=(
         ~/.taskrc
         ~/.vimperatorrc
         ~/.screenlayout
+        ~/Scripts
 )
 
 TARGETS_LEN=${#TARGETS[@]}
@@ -50,7 +51,7 @@ deploy() {
 
                 if [[ -d "$src" ]]; then
                         printf "copy from %s/* to %s\n" "$src" "$dest"
-                        mkdir -p $dest
+                        mkdir -p "$dest"
                         cp -r "$src"/* "$dest"
                 elif [[ -f "$src" ]]; then
                         printf "copy from %s to %s\n" "$src" "$dest"
