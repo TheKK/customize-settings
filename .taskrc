@@ -1,25 +1,33 @@
-# Sync
-taskd.certificate=~/.task/private.certificate.pem
-taskd.key=~/.task/private.key.pem
-taskd.ca=~/.task/ca.cert.pem
-taskd.server=taskwarrior.inthe.am:53589
-taskd.credentials=inthe_am/thumbd03803/c39c9253-580a-4736-bd54-a38642870f35
-taskd.trust=ignore hostname
+# [Created by task 2.5.1 7/12/2016 20:08:35]
+# Taskwarrior program configuration file.
+# For more documentation, see http://taskwarrior.org or try 'man task', 'man task-color',
+# 'man task-sync' or 'man taskrc'
 
-# Ouputs
-default.command = next -in
-verbose = off
+# Here is an example of entries that use the default, override and blank values
+#   variable=foo   -- By specifying a value, this overrides the default
+#   variable=      -- By specifying no value, this means no default
+#   #variable=foo  -- By commenting out the line, or deleting it, this uses the default
 
-# Inbox
-urgency.user.tag.in.coefficient = 15.0
-color.tag.in = green
+# Use the command 'task show' to see all defaults and overrides
 
-# 'task in' report
-report.in.columns = id,description
-report.in.columns = id,description
-report.in.description = Inbox
-report.in.filter = status:pending limit:page (+in)
-report.in.labels = ID,Description
+# Files
+data.location=~/.task
+
+# Color theme (uncomment one to use)
+#include /usr/share/doc/task/rc/light-16.theme
+#include /usr/share/doc/task/rc/light-256.theme
+#include /usr/share/doc/task/rc/dark-16.theme
+#include /usr/share/doc/task/rc/dark-256.theme
+#include /usr/share/doc/task/rc/dark-red-256.theme
+#include /usr/share/doc/task/rc/dark-green-256.theme
+#include /usr/share/doc/task/rc/dark-blue-256.theme
+#include /usr/share/doc/task/rc/dark-violets-256.theme
+#include /usr/share/doc/task/rc/dark-yellow-green.theme
+#include /usr/share/doc/task/rc/dark-gray-256.theme
+#include /usr/share/doc/task/rc/dark-gray-blue-256.theme
+include /usr/share/doc/task/rc/solarized-dark-256.theme
+#include /usr/share/doc/task/rc/solarized-light-256.theme
+#include /usr/share/doc/task/rc/no-color.theme
 
 # Contextes
 context.work = +@work or +in

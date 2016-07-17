@@ -46,7 +46,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git hg tmux catimg nyan colored-man colorize
-cp extract fasd gitignore adb zsh_reload rustup)
+cp extract fasd gitignore adb zsh_reload rustup taskwarrior)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -83,8 +83,8 @@ export QT_IM_MODULE=ibus
 export EDITOR=nvim
 export HAXE_STD_PATH=/opt/haxe/std	#for haxe
 export GCC_COLORS=1
-export RUST_SRC_PATH=~/Programs/rust/src
-export CARGO_HOME=~/.cargo/
+export RUST_SRC_PATH="$HOME/Programs/rust/src"
+export CARGO_HOME="$HOME/.cargo/"
 #source ~/Programs/emsdk_portable/emsdk_env.sh > /dev/null
 
 # My startup action
@@ -99,7 +99,7 @@ alias vim='nvim'
 alias vi='nvim'
 alias ec='emacsclient -a emacs -n -c'
 alias nyancha='mocha --reporter nyan'
-alias toggleRustBt='
+alias rustToggleBt='
         if [ "$RUST_BACKTRACE" -eq "1" ]; then
                 export RUST_BACKTRACE=0
                 echo "rust backtrace is [off]"
@@ -113,7 +113,7 @@ alias toggleRustBt='
 in()
 {
 	if [ "$#" -eq "0" ]; then
-		task in # show in tasks
+		task +in # show in tasks
 	else
 		task add +in "$@" # add something as in task
 	fi
@@ -134,15 +134,19 @@ tick()
 next()
 {
 	if [ "$#" -eq "0" ]; then
-		task next # show in tasks
+		task +next # show next tasks
 	else
-		task add +next "$@" # add something as in task
+		task add +next "$@" # add something as next task
 	fi
 }
 
 someday()
 {
-	task add wait:someday "$@"
+	if [ "$#" -eq "0" ]; then
+		task +someday all # show someday tasks
+	else
+		task add +someday wait:someday "$@" # add something as someday task
+	fi
 }
 
 alias think='tick +1d'

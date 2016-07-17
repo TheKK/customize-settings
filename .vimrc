@@ -40,8 +40,7 @@ com! EditRc tabnew ~/.vimrc
 com! Uz source ~/.vimrc
 
 "My Key Mapping"
-noremap <silent><F1> :JSHint moz:true esnext:true<CR>
-noremap <F2> :source ~/.vimrc<cr>
+noremap <F2> :set spell!<cr>
 noremap <F3> :set number!<cr>
 noremap <F4> :NERDTreeToggle<cr>
 
@@ -55,6 +54,7 @@ noremap <S-F8> :tabmove +1<cr>
 
 noremap <F9> :TagbarToggle<cr>
 noremap <F10> :set list!<cr>
+noremap <F12> :source ~/.vimrc<cr>
 
 noremap <C-b> :CtrlPBuffer<cr>
 
@@ -170,7 +170,6 @@ let g:ctrlp_regexp = 0
 
 " Racer
 let g:racer_cmd = "/home/kk/.cargo/bin/racer"
-let $RUST_SRC_PATH = "/home/kk/Programs/rust/src"
 
 " JSX syntax
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
