@@ -50,6 +50,10 @@ values."
                                       ;; json
                                       json-mode
 
+                                      ;; ycmd
+                                      ycmd
+                                      company-ycmd
+
                                       ag
                                       company
                                       flycheck
@@ -294,6 +298,11 @@ layers configuration. You are free to put any user code."
   ;; Racer
   (setq-default racer-cmd "~/.cargo/bin/racer")
   (setq-default racer-rust-src-path "~/Programs/rust/src")
+
+
+  ;; ycmd
+  (set-variable 'ycmd-global-config "/home/kk/.ycm_extra_conf.py")
+  (set-variable 'ycmd-server-command '("python" "/home/kk/.vim/plugged/YouCompleteMe/third_party/ycmd/ycmd"))
 
   ;; Ag
   (setq-default ag-reuse-window t)
