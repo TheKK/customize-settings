@@ -3,22 +3,23 @@
 syntax on
 colorscheme myDarkblue
 
-set clipboard+=unnamedplus "Share clipboard between X11 and vim
-set foldmethod=syntax
-set noswapfile
 set autowrite
-set foldmethod=indent
-set foldlevelstart=20
-set nowrap
 set cinoptions=:0,l1,t0,(0,W1s,m1,g0
-set t_Co=256
+set clipboard+=unnamedplus "Share clipboard between X11 and vim
 set colorcolumn=81
+set completeopt=menu
 set cursorline
-set tabstop=8
-set softtabstop=8
 set expandtab
-set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
+set foldlevelstart=20
+set foldmethod=indent
+set foldmethod=syntax
 set list
+set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
+set noswapfile
+set nowrap
+set softtabstop=8
+set t_Co=256
+set tabstop=8
 
 fu! Multiple_cursors_before()
         let s:old_ycm_whitelist = g:ycm_filetype_whitelist
@@ -57,6 +58,12 @@ noremap <F10> :set list!<cr>
 noremap <F12> :source ~/.vimrc<cr>
 
 noremap <C-b> :CtrlPBuffer<cr>
+noremap <C-]> :YcmCompleter GoToImprecise<CR>
+
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
 
 " Plugs
 call plug#begin('~/.vim/plugged')
@@ -78,22 +85,14 @@ Plug 'jdonaldson/vaxe'
 Plug 'sophacles/vim-processing'
 Plug 'octave.vim--'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'kien/ctrlp.vim'
-"Plug 'Shougo/unite.vim'
 Plug 'syntaxudev.vim'
 Plug 'medvid/vim-armasm'
-"Plug 'Shougo/vimproc.vim'
-"Plug 'chrisbra/Replay'
-"Plug 'ervandew/supertab'
 Plug 'nanotech/jellybeans.vim'
 Plug 'pangloss/vim-javascript'
-"Plug 'fholgado/minibufexpl.vim'
 Plug 'marijnh/tern_for_vim'
 Plug 'Shutnik/jshint2.vim'
 Plug 'rust-lang/rust.vim'
-"Plug 'elzr/vim-json'
 Plug 'airblade/vim-gitgutter'
-"Plug 'jeaye/color_coded'
 Plug 'rdnetto/YCM-Generator'
 Plug 'racer-rust/vim-racer'
 Plug 'cespare/vim-toml'
@@ -101,12 +100,12 @@ Plug 'mxw/vim-jsx'
 
 call plug#end()
 
-"MY CHANGE"
+" Variables
 
-"Powerline"
+" Powerline"
 set nocompatible   " Disable vi-compatibility
 set laststatus=2   " Always show the statusline
-"set encoding=utf-8 " Necessary to show Unicode glyphs
+set encoding=utf-8 " Necessary to show Unicode glyphs
 
 let g:Powerline_symbols='fancy'
 let g:Powerline_colorscheme = 'solarized256'
@@ -118,55 +117,30 @@ let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#tabline#left_sep = '⮀'
-"let g:airline#extensions#tabline#left_alt_sep = '⮁'
 if !exists('g:airline_symbols')
         let g:airline_symbols = {}
 endif
-"let g:airline_left_sep = '⮀'
-"let g:airline_left_alt_sep = '⮁'
-"let g:airline_right_sep = '⮂'
-"let g:airline_right_alt_sep = '⮃'
-"let g:airline_symbols.branch = '⭠'
-"let g:airline_symbols.readonly = '⭤'
-"let g:airline_symbols.linenr = '⭡'
 
 let g:syntastic_check_on_open = 1
-"let g:syntastic_cpp_checkers = ['clang', 'gcc']
-"let g:syntastic_cpp_include_dirs = ['./', './include/', '../include/', '/usr/include/SDL2/']
-"let g:syntastic_cpp_check_header = 1
-"let g:syntastic_cpp_auto_refresh_includes = 1
-"let g:syntastic_cpp_remove_include_errors = 1
 let g:syntastic_enable_signs = 1
-"let g:syntastic_cpp_compiler = 'clang++'
-"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
-"set error or warning signs
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 
-map <C-]> :YcmCompleter GoToImprecise<CR>
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-"let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_filepath_completion_use_working_dir = 1
 let g:ycm_key_invoke_completion = '<C-Return>'
 let g:ycm_warning_symbol = '>>'
-set completeopt=menu
 
 let g:tagbar_autofocus = 1
 let g:tagbar_sort = 0
 
 let g:EasyMotion_smartcase = 1
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
 
 let g:ctrlp_by_filename = 1
 let g:ctrlp_open_new_file = 't'
 let g:ctrlp_regexp = 0
-"let g:ctrlp_max_files = 0
 
 " Racer
 let g:racer_cmd = "/home/kk/.cargo/bin/racer"

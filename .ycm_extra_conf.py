@@ -40,9 +40,9 @@ flags = [
 # For a C project, you would set this to 'c' instead of 'c++'.
 '-x',
 'c++',
-'-I /usr/include/',
-'-I /usr/include/qt/',
-'-I /usr/include/qt4',
+'-I', '/usr/include/',
+'-I', '/usr/include/qt/',
+'-I', '/usr/include/qt4',
 ]
 
 

@@ -10,7 +10,7 @@ values."
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
-   dotspacemacs-distribution 'spacemacs-base
+   dotspacemacs-distribution 'spacemacs
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
@@ -42,7 +42,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
                                       ;; rust
-                                      company-racer
+                                      cargo
                                       flycheck-rust
                                       racer
                                       rust-mode
@@ -54,16 +54,29 @@ values."
                                       ycmd
                                       company-ycmd
 
+                                      ;; spell checking
+                                      flyspell-correct-helm
+                                      flycheck-pos-tip
+
+                                      ;; web-mode
+                                      web-mode
+
                                       ag
+                                      avy
+                                      cmake-mode
                                       company
-                                      flycheck
                                       evil-mc
-                                      markdown-mode
+                                      flycheck
                                       golden-ratio
                                       grizzl
+                                      highlight-chars
+                                      magit
+                                      markdown-mode
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+                                    smartparens
+                                    )
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
@@ -213,11 +226,11 @@ values."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 30
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-inactive-transparency 90
+   dotspacemacs-inactive-transparency 10
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
@@ -265,12 +278,15 @@ in `dotspacemacs/user-config'."
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+  ;; Emacs
+  (setq-default default-tab-width 4)
+
   ;; Projectile
   (setq-default projectile-enable-caching t)
   (setq-default projectile-completion-system 'grizzl)
 
   ;; Company
-  (setq-default company-idle-delay 0.2)
+  (setq-default company-idle-delay 0.3)
   (setq-default company-minimum-prefix-length 1)
   (setq-default company-selection-wrap-around t)
   (global-company-mode 1)
@@ -279,12 +295,32 @@ layers configuration. You are free to put any user code."
        (define-key company-active-map (kbd "TAB") 'company-select-next)
        (define-key company-active-map [tab] 'company-select-next)))
 
+  ;; Flycheck
+  (setq flycheck-display-errors-delay 0.2)
+
   ;; golden-ratio-mode
   (golden-ratio-mode 1)
   (setq-default golden-ratio-auto-scale t)
   (setq-default golden-ratio-exclude-modes '("ediff-mode"
+                                             "IELM"
+                                             "dired-mode"
                                              "eshell-mode"
-                                             "dired-mode"))
+                                             "gdb-breakpoints-mode"
+                                             "gdb-disassembly-mode"
+                                             "gdb-frames-mode"
+                                             "gdb-inferior-io-mode"
+                                             "gdb-inferior-io-mode"
+                                             "gdb-locals-mode"
+                                             "gdb-memory-mode"
+                                             "gdb-registers-mode"
+                                             "gdb-threads-mode"
+                                             "gud-mode"
+                                             "gud-mode"
+                                             "helm-mode"
+                                             "magit-log-mode"
+                                             "magit-reflog-mode"
+                                             "magit-status-mode"
+                                             "minimap-mode"))
 
   ;; mc
   (global-evil-mc-mode 1)
@@ -299,15 +335,35 @@ layers configuration. You are free to put any user code."
   (setq-default racer-cmd "~/.cargo/bin/racer")
   (setq-default racer-rust-src-path "~/Programs/rust/src")
 
-
   ;; ycmd
-  (set-variable 'ycmd-global-config "/home/kk/.ycm_extra_conf.py")
-  (set-variable 'ycmd-server-command '("python" "/home/kk/.vim/plugged/YouCompleteMe/third_party/ycmd/ycmd"))
+  (setq-default ycmd-global-config "/home/kk/.ycm_extra_conf.py")
+  (setq-default ycmd-server-command '("python3" "/home/kk/.vim/plugged/YouCompleteMe/third_party/ycmd/ycmd"))
+
+  ;; ispell ccat
+  (setq ispell-local-dictionary-alist
+        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "en_US") nil iso-8859-1)
+          ))
+  (setq ispell-program-name "hunspell"
+        ispell-dictionary "en_US")
+
+  ;; flyspell
+  (setq flyspell-issue-message-flag nil)
+
+  ;; flyspell correction
+  (global-set-key (kbd "C-c c") 'flyspell-correct-word-generic)
+  (with-eval-after-load 'flycheck
+    (flycheck-pos-tip-mode))
+
+  (global-set-key (kbd "M-m t t") 'hc-toggle-highlight-tabs)
 
   ;; Ag
   (setq-default ag-reuse-window t)
   (setq-default ag-reuse-buffers t)
 
+  ;; C
+  (setq-default c-default-style "linux"
+                c-basic-offset 4
+                c-toggle-auto-state 0)
   ;; Rust
   (add-hook 'rust-mode-hook
             '(lambda ()
@@ -325,10 +381,6 @@ layers configuration. You are free to put any user code."
 
   ;; Javascript
   (setq-default js-indent-level 2)
-
-  ;; Flycheck
-  (global-flycheck-mode)
   )
-
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

@@ -59,7 +59,7 @@ export PATH="$PATH:$HOME/.gem/ruby/2.2.0/bin"
 export PATH="$PATH:$HOME/.cabal/bin"
 export PATH="$PATH:$HOME/.go/bin"
 export PATH="$PATH:$HOME/Apps/git-cinnabar"
-source ~/.cargo/env
+source ~/.cargo/env > /dev/null
 
 # # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -160,6 +160,7 @@ export MYVIMRC=~/.vimrc
 # Multi monitor setting
 alias single_edp_normal="$HOME/.screenlayout/single_edp_normal.sh"
 alias multi_dp_right_rotate_left="$HOME/.screenlayout/multi_dp_right_rotate_left.sh"
+alias multi_dp_left_rotate_right="$HOME/.screenlayout/multi_dp_left_rotate_right.sh"
 alias multi_dp_mirror="$HOME/.screenlayout/multi_dp_mirror.sh"
 
 # GAMES!
