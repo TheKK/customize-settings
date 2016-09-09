@@ -53,6 +53,7 @@ values."
                                       ;; ycmd
                                       ycmd
                                       company-ycmd
+                                      flycheck-ycmd
 
                                       ;; spell checking
                                       flyspell-correct-helm
@@ -75,7 +76,7 @@ values."
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(
-                                    smartparens
+                                    smartparens-config
                                     )
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
@@ -281,6 +282,13 @@ layers configuration. You are free to put any user code."
   ;; Emacs
   (setq-default default-tab-width 4)
 
+  ;; Magit
+  (global-set-key (kbd "M-m g s") 'magit-status)
+  (global-set-key (kbd "M-m g g") 'magit-dispatch-popup)
+
+  ;; Flycheck
+  (flycheck-ycmd-setup)
+
   ;; Projectile
   (setq-default projectile-enable-caching t)
   (setq-default projectile-completion-system 'grizzl)
@@ -296,7 +304,7 @@ layers configuration. You are free to put any user code."
        (define-key company-active-map [tab] 'company-select-next)))
 
   ;; Flycheck
-  (setq flycheck-display-errors-delay 0.2)
+  (setq-default flycheck-display-errors-delay 0.1)
 
   ;; golden-ratio-mode
   (golden-ratio-mode 1)
@@ -335,10 +343,6 @@ layers configuration. You are free to put any user code."
   (setq-default racer-cmd "~/.cargo/bin/racer")
   (setq-default racer-rust-src-path "~/Programs/rust/src")
 
-  ;; ycmd
-  (setq-default ycmd-global-config "/home/kk/.ycm_extra_conf.py")
-  (setq-default ycmd-server-command '("python3" "/home/kk/.vim/plugged/YouCompleteMe/third_party/ycmd/ycmd"))
-
   ;; ispell ccat
   (setq ispell-local-dictionary-alist
         '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "en_US") nil iso-8859-1)
@@ -364,23 +368,41 @@ layers configuration. You are free to put any user code."
   (setq-default c-default-style "linux"
                 c-basic-offset 4
                 c-toggle-auto-state 0)
+
   ;; Rust
-  (add-hook 'rust-mode-hook
-            '(lambda ()
-               ;; Enable racer
-               (racer-mode)
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
 
-               ;; Hook in racer with eldoc to provide documentation
-               (racer-turn-on-eldoc)
-
-               ;; Use flycheck-rust in rust-mode
-               (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-
-               ;; Use company-racer in rust mode
-               (set (make-local-variable 'company-backends) '(company-racer))))
+  (setq company-tooltip-align-annotations t)
 
   ;; Javascript
   (setq-default js-indent-level 2)
+
+  ;; cmake
+  (setq-default cmake-indent 4)
   )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(auto-save-default nil)
+ '(auto-save-list-file-prefix "/home/kk/.emacs.d/.cache/auto-save/")
+ '(company-idle-delay 0.1)
+ '(company-tooltip-idle-delay 0)
+ '(savehist-autosave-interval 60)
+ '(use-package-inject-hooks t)
+ '(ycmd-global-config "/home/kk/.ycm_extra_conf.py")
+ '(ycmd-server-args (quote ("--log=info" "--idle_suicide_seconds=10800")))
+ '(ycmd-server-command
+   (quote
+    ("python3" "/home/kk/.vim/plugged/YouCompleteMe/third_party/ycmd/ycmd"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

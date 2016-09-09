@@ -97,6 +97,7 @@ Plug 'rdnetto/YCM-Generator'
 Plug 'racer-rust/vim-racer'
 Plug 'cespare/vim-toml'
 Plug 'mxw/vim-jsx'
+Plug 'morhetz/gruvbox'
 
 call plug#end()
 

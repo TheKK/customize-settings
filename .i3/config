@@ -40,6 +40,7 @@ bindsym $mod+d exec --no-startup-id dmenu_run $dmenuParams
 bindsym $mod+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu $dmenuParams"
 bindsym $mod+Shift+p exec --no-startup-id passmenu $dmenuParams
 bindsym $mod+Shift+b exec --no-startup-id ~/.i3/backlightControll.sh
+bindsym $mod+Shift+m exec --no-startup-id ~/.i3/monitorLayout.sh
 
 # change focus
 bindsym $mod+h focus left
@@ -131,8 +132,8 @@ bindsym $mod+Shift+8 move container to workspace $WS8
 bindsym $mod+Shift+9 move container to workspace $WS9
 
 # move firefox console to bigger screen
+workspace "$WS2" output DP1
 workspace "$WS2" output VGA1
-workspace "$WS9" output HDMI1
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -210,8 +211,8 @@ bindsym Control+Mod1+l exec ~/.i3/lock.sh
 bindsym Control+Mod1+r exec xrandr --output eDP1 --rotate right
 bindsym Control+Mod1+n exec xrandr --output eDP1 --rotate normal
 
-bindsym Control+Mod1+Shift+r exec xrandr --output HDMI1 --rotate left
-bindsym Control+Mod1+Shift+n exec xrandr --output HDMI1 --rotate normal
+bindsym Control+Mod1+Shift+r exec xrandr --output DP1 --rotate left
+bindsym Control+Mod1+Shift+n exec xrandr --output DP1 --rotate normal
 
 #Suspend system
 bindsym Control+Mod1+s exec i3lock -i ~/Picture/Wallpapers/screenlock.png -p win -u && systemctl suspend
