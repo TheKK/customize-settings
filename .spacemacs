@@ -73,6 +73,7 @@ values."
                                       highlight-chars
                                       magit
                                       markdown-mode
+                                      toml-mode
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(
@@ -287,6 +288,7 @@ layers configuration. You are free to put any user code."
   (global-set-key (kbd "M-m g g") 'magit-dispatch-popup)
 
   ;; Flycheck
+  (flycheck-rust-setup)
   (flycheck-ycmd-setup)
 
   ;; Projectile
@@ -393,6 +395,7 @@ layers configuration. You are free to put any user code."
  '(auto-save-list-file-prefix "/home/kk/.emacs.d/.cache/auto-save/")
  '(company-idle-delay 0.1)
  '(company-tooltip-idle-delay 0)
+ '(rust-format-on-save t)
  '(savehist-autosave-interval 60)
  '(use-package-inject-hooks t)
  '(ycmd-global-config "/home/kk/.ycm_extra_conf.py")

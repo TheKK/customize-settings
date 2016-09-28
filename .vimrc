@@ -94,7 +94,6 @@ Plug 'Shutnik/jshint2.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'rdnetto/YCM-Generator'
-Plug 'racer-rust/vim-racer'
 Plug 'cespare/vim-toml'
 Plug 'mxw/vim-jsx'
 Plug 'morhetz/gruvbox'
@@ -142,9 +141,6 @@ let g:EasyMotion_smartcase = 1
 let g:ctrlp_by_filename = 1
 let g:ctrlp_open_new_file = 't'
 let g:ctrlp_regexp = 0
-
-" Racer
-let g:racer_cmd = "/home/kk/.cargo/bin/racer"
 
 " JSX syntax
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
