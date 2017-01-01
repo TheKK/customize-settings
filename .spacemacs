@@ -50,10 +50,8 @@ values."
                                       ;; json
                                       json-mode
 
-                                      ;; ycmd
-                                      ycmd
-                                      company-ycmd
-                                      flycheck-ycmd
+                                      ;; glsl
+                                      glsl-mode
 
                                       ;; spell checking
                                       flyspell-correct-helm
@@ -61,6 +59,14 @@ values."
 
                                       ;; web-mode
                                       web-mode
+
+                                      ;; irony
+                                      irony
+                                      irony-eldoc
+                                      company-irony
+                                      flycheck-irony
+
+                                      rtags
 
                                       ag
                                       avy
@@ -287,10 +293,6 @@ layers configuration. You are free to put any user code."
   (global-set-key (kbd "M-m g s") 'magit-status)
   (global-set-key (kbd "M-m g g") 'magit-dispatch-popup)
 
-  ;; Flycheck
-  (flycheck-rust-setup)
-  (flycheck-ycmd-setup)
-
   ;; Projectile
   (setq-default projectile-enable-caching t)
   (setq-default projectile-completion-system 'grizzl)
@@ -307,6 +309,24 @@ layers configuration. You are free to put any user code."
 
   ;; Flycheck
   (setq-default flycheck-display-errors-delay 0.1)
+
+  ;; irony
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'c++-mode-hook 'irony-mode)
+
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'irony-mode-hook 'irony-eldoc)
+
+  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
+
+  (add-to-list 'company-backends 'company-irony)
 
   ;; golden-ratio-mode
   (golden-ratio-mode 1)
@@ -341,6 +361,11 @@ layers configuration. You are free to put any user code."
     (kbd "C-m") 'evil-mc-skip-and-goto-next-match
     )
 
+  ;; rtags
+  (require 'rtags-helm)
+
+  (setq rtags-path "/home/kk/Programs/rtags/build/bin/")
+
   ;; Racer
   (setq-default racer-cmd "~/.cargo/bin/racer")
   (setq-default racer-rust-src-path "~/Programs/rust/src")
@@ -371,10 +396,19 @@ layers configuration. You are free to put any user code."
                 c-basic-offset 4
                 c-toggle-auto-state 0)
 
+  ;; C++
+
   ;; Rust
+  (global-set-key (kbd "M-m C-c B") 'cargo-process-bench)
+  (global-set-key (kbd "M-m C-c b") 'cargo-process-build)
+  (global-set-key (kbd "M-m C-c d") 'cargo-process-doc)
+  (global-set-key (kbd "M-m C-c r") 'cargo-process-run)
+
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
   (add-hook 'racer-mode-hook #'company-mode)
+
+  (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
 
   (setq company-tooltip-align-annotations t)
 
@@ -393,16 +427,30 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(auto-save-default nil)
  '(auto-save-list-file-prefix "/home/kk/.emacs.d/.cache/auto-save/")
- '(company-idle-delay 0.1)
+ '(company-auto-complete t)
+ '(company-auto-complete-chars (quote (32 41 46)))
+ '(company-idle-delay 0.3)
+ '(company-minimum-prefix-length 3)
+ '(company-rtags-begin-after-member-access nil)
+ '(company-selection-wrap-around t)
+ '(company-tooltip-align-annotations t)
  '(company-tooltip-idle-delay 0)
+ '(global-company-mode t)
+ '(irony-additional-clang-options (quote ("-std=c++11" "-isystem=/usr/include/c++/6.2.1/")))
+ '(irony-completion-trigger-commands
+   (quote
+    (c-context-line-break c-scope-operator c-electric-backspace c-electric-brace c-electric-colon c-electric-lt-gt c-electric-paren c-electric-pound c-electric-semi&comma c-electric-slash c-electric-star)))
+ '(package-selected-packages
+   (quote
+    (rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
+ '(rtags-path "/home/kk/Programs/rtags/build/bin/")
+ '(rtags-use-helm t)
  '(rust-format-on-save t)
  '(savehist-autosave-interval 60)
  '(use-package-inject-hooks t)
+ '(ycmd-eldoc-always-semantic-server-query-modes t)
  '(ycmd-global-config "/home/kk/.ycm_extra_conf.py")
- '(ycmd-server-args (quote ("--log=info" "--idle_suicide_seconds=10800")))
- '(ycmd-server-command
-   (quote
-    ("python3" "/home/kk/.vim/plugged/YouCompleteMe/third_party/ycmd/ycmd"))))
+ '(ycmd-min-num-chars-for-completion 0))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

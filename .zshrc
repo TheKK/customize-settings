@@ -46,12 +46,15 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git hg tmux catimg nyan colored-man colorize
-cp extract fasd gitignore adb zsh_reload rustup taskwarrior)
+cp extract fasd gitignore adb zsh_reload rustup theme taskwarrior)
 
 source $ZSH/oh-my-zsh.sh
 
 # Syntax highlihgt
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+fpath+="~/.zfunc"
+compinit
 
 # User configuration
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
@@ -83,7 +86,7 @@ export QT_IM_MODULE=ibus
 export EDITOR=nvim
 export HAXE_STD_PATH=/opt/haxe/std	#for haxe
 export GCC_COLORS=1
-export RUST_SRC_PATH="$HOME/Programs/rust/src"
+export RUST_SRC_PATH="$HOME/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
 export CARGO_HOME="$HOME/.cargo/"
 #source ~/Programs/emsdk_portable/emsdk_env.sh > /dev/null
 
@@ -99,6 +102,13 @@ alias vim='nvim'
 alias vi='nvim'
 alias ec='emacsclient -a emacs -n -c'
 alias nyancha='mocha --reporter nyan'
+
+# exa aliases
+alias ls='exa'
+alias l='exa -lhgua'
+alias la='exa -lhgua'
+alias ll='exa -lhgu'
+
 alias rustToggleBt='
         if [ "$RUST_BACKTRACE" -eq "1" ]; then
                 export RUST_BACKTRACE=0
@@ -156,12 +166,6 @@ alias cthome='task context home'
 alias ctnone='task context none'
 
 export MYVIMRC=~/.vimrc
-
-# Multi monitor setting
-alias single_edp_normal="$HOME/.screenlayout/single_edp_normal.sh"
-alias multi_dp_right_rotate_left="$HOME/.screenlayout/multi_dp_right_rotate_left.sh"
-alias multi_dp_left_rotate_right="$HOME/.screenlayout/multi_dp_left_rotate_right.sh"
-alias multi_dp_mirror="$HOME/.screenlayout/multi_dp_mirror.sh"
 
 # GAMES!
 alias iidx="$HOME/Programs/angolmois/normal.sh"

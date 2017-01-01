@@ -17,9 +17,10 @@ set list
 set listchars=tab:\|\ ,trail:!,extends:>,precedes:<
 set noswapfile
 set nowrap
-set softtabstop=8
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 set t_Co=256
-set tabstop=8
 
 fu! Multiple_cursors_before()
         let s:old_ycm_whitelist = g:ycm_filetype_whitelist
@@ -97,6 +98,7 @@ Plug 'rdnetto/YCM-Generator'
 Plug 'cespare/vim-toml'
 Plug 'mxw/vim-jsx'
 Plug 'morhetz/gruvbox'
+Plug 'hynek/vim-python-pep8-indent'
 
 call plug#end()
 
