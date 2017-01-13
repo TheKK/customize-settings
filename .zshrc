@@ -104,10 +104,12 @@ alias ec='emacsclient -a emacs -n -c'
 alias nyancha='mocha --reporter nyan'
 
 # exa aliases
-alias ls='exa'
-alias l='exa -lhgua'
-alias la='exa -lhgua'
-alias ll='exa -lhgu'
+if which exa >> /dev/null; then
+    alias ls='exa'
+    alias l='exa -lhgua'
+    alias la='exa -lhgua'
+    alias ll='exa -lhgu'
+fi
 
 alias rustToggleBt='
         if [ "$RUST_BACKTRACE" -eq "1" ]; then

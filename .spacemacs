@@ -66,11 +66,9 @@ values."
                                       company-irony
                                       flycheck-irony
 
-                                      rtags
-
+                                      ;; tools
                                       ag
                                       avy
-                                      cmake-mode
                                       company
                                       evil-mc
                                       flycheck
@@ -78,7 +76,12 @@ values."
                                       grizzl
                                       highlight-chars
                                       magit
+                                      rtags
+
+                                      ;; modes
+                                      cmake-mode
                                       markdown-mode
+                                      protobuf-mode
                                       toml-mode
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
@@ -293,6 +296,11 @@ layers configuration. You are free to put any user code."
   (global-set-key (kbd "M-m g s") 'magit-status)
   (global-set-key (kbd "M-m g g") 'magit-dispatch-popup)
 
+  (eval-after-load 'git-commit-modo
+    '(progn
+       (flyspell-mode)
+       ))
+
   ;; Projectile
   (setq-default projectile-enable-caching t)
   (setq-default projectile-completion-system 'grizzl)
@@ -323,6 +331,7 @@ layers configuration. You are free to put any user code."
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'irony-eldoc)
+  (add-hook 'irony-mode-hook 'flycheck-mode)
 
   (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
 
@@ -405,6 +414,7 @@ layers configuration. You are free to put any user code."
   (global-set-key (kbd "M-m C-c r") 'cargo-process-run)
 
   (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'rust-mode-hook #'flyspell-prog-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
   (add-hook 'racer-mode-hook #'company-mode)
 
@@ -428,7 +438,7 @@ layers configuration. You are free to put any user code."
  '(auto-save-default nil)
  '(auto-save-list-file-prefix "/home/kk/.emacs.d/.cache/auto-save/")
  '(company-auto-complete t)
- '(company-auto-complete-chars (quote (32 41 46)))
+ '(company-auto-complete-chars nil)
  '(company-idle-delay 0.3)
  '(company-minimum-prefix-length 3)
  '(company-rtags-begin-after-member-access nil)
@@ -442,7 +452,7 @@ layers configuration. You are free to put any user code."
     (c-context-line-break c-scope-operator c-electric-backspace c-electric-brace c-electric-colon c-electric-lt-gt c-electric-paren c-electric-pound c-electric-semi&comma c-electric-slash c-electric-star)))
  '(package-selected-packages
    (quote
-    (rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
+    (protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
  '(rtags-path "/home/kk/Programs/rtags/build/bin/")
  '(rtags-use-helm t)
  '(rust-format-on-save t)

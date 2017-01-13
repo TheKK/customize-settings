@@ -30,7 +30,8 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 #include /usr/share/doc/task/rc/no-color.theme
 
 # Contextes
-context.work = +@work or +in
-context.home = +@home or +in
-context.diva=project:diva
+context.work = +work or +in
+context.home = +home or +in
+context.diva = project:diva
+context = work
 context=diva

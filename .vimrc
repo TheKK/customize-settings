@@ -150,3 +150,4 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " Rust.vim
 let g:rustfmt_fail_silently = 1
 let g:rustfmt_autosave = 1
+let g:syntastic_rust_checkers = ['rustc']
