@@ -50,6 +50,10 @@ values."
                                       ;; json
                                       json-mode
 
+                                      ;; javascript
+                                      tern
+                                      company-tern
+
                                       ;; glsl
                                       glsl-mode
 
@@ -65,6 +69,7 @@ values."
                                       irony-eldoc
                                       company-irony
                                       flycheck-irony
+                                      company-irony-c-headers
 
                                       ;; tools
                                       ag
@@ -76,13 +81,14 @@ values."
                                       grizzl
                                       highlight-chars
                                       magit
-                                      rtags
+                                      ;; rtags
 
                                       ;; modes
                                       cmake-mode
                                       markdown-mode
                                       protobuf-mode
                                       toml-mode
+                                      yaml-mode
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(
@@ -137,6 +143,11 @@ values."
    dotspacemacs-startup-recent-list-size 5
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
+   ;; Controls fuzzy matching in helm. If set to `always', force fuzzy matching
+   ;; in all non-asynchronous sources. If set to `source', preserve individual
+   ;; source settings. Else, disable fuzzy matching in all sources.
+   ;; (default 'always)
+   dotspacemacs-helm-use-fuzzy 'source
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
@@ -335,7 +346,7 @@ layers configuration. You are free to put any user code."
 
   (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
 
-  (add-to-list 'company-backends 'company-irony)
+  (add-to-list 'company-backends '(company-irony-c-headers company-irony))
 
   ;; golden-ratio-mode
   (golden-ratio-mode 1)
@@ -371,9 +382,10 @@ layers configuration. You are free to put any user code."
     )
 
   ;; rtags
-  (require 'rtags-helm)
+  (load "~/Programs/rtags/src/rtags.el")
+  (load "~/Programs/rtags/src/rtags-helm.el")
 
-  (setq rtags-path "/home/kk/Programs/rtags/build/bin/")
+  (setq rtags-path "~/Programs/rtags/build/bin/")
 
   ;; Racer
   (setq-default racer-cmd "~/.cargo/bin/racer")
@@ -407,6 +419,9 @@ layers configuration. You are free to put any user code."
 
   ;; C++
 
+  ;; Javascript
+  (add-to-list 'company-backends 'company-tern)
+
   ;; Rust
   (global-set-key (kbd "M-m C-c B") 'cargo-process-bench)
   (global-set-key (kbd "M-m C-c b") 'cargo-process-build)
@@ -427,6 +442,9 @@ layers configuration. You are free to put any user code."
 
   ;; cmake
   (setq-default cmake-indent 4)
+
+  ;; other
+  (load "/usr/share/clang/clang-format.el")
   )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -450,9 +468,10 @@ layers configuration. You are free to put any user code."
  '(irony-completion-trigger-commands
    (quote
     (c-context-line-break c-scope-operator c-electric-backspace c-electric-brace c-electric-colon c-electric-lt-gt c-electric-paren c-electric-pound c-electric-semi&comma c-electric-slash c-electric-star)))
+ '(magit-commit-arguments (quote ("--signoff")))
  '(package-selected-packages
    (quote
-    (protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
+    (mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
  '(rtags-path "/home/kk/Programs/rtags/build/bin/")
  '(rtags-use-helm t)
  '(rust-format-on-save t)

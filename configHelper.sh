@@ -15,6 +15,7 @@ TARGETS=(
         ~/.vimperatorrc
         ~/.screenlayout
         ~/Scripts
+        ~/.clang-format
 )
 
 TARGETS_LEN=${#TARGETS[@]}
