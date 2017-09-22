@@ -32,5 +32,4 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 # Contextes
 context.work = +work or +in
 context.home = +home or +in
-context.diva = project:diva
-context=diva
+context.lab = project:diva or +lab

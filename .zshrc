@@ -45,8 +45,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git hg tmux catimg nyan colored-man colorize
-cp extract fasd gitignore adb zsh_reload rustup theme taskwarrior)
+plugins=(git hg tmux catimg nyan colored-man colorize cp extract fasd gitignore adb zsh_reload rustup theme taskwarrior)
 
 source $ZSH/oh-my-zsh.sh
 

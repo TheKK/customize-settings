@@ -18,6 +18,9 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     javascript
+     html
+     markdown
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -28,7 +31,7 @@ values."
      emacs-lisp
      ;; git
      ;; markdown
-     ;; org
+     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -41,6 +44,9 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
+                                      ;; lsp
+                                      lsp-rust
+
                                       ;; rust
                                       cargo
                                       flycheck-rust
@@ -389,7 +395,7 @@ layers configuration. You are free to put any user code."
 
   ;; Racer
   (setq-default racer-cmd "~/.cargo/bin/racer")
-  (setq-default racer-rust-src-path "~/Programs/rust/src")
+  (setq-default racer-rust-src-path "~/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
 
   ;; ispell ccat
   (setq ispell-local-dictionary-alist
@@ -412,12 +418,40 @@ layers configuration. You are free to put any user code."
   (setq-default ag-reuse-window t)
   (setq-default ag-reuse-buffers t)
 
+  ;; Org-pomodoro
+  (defun notify-send (title message)
+    (call-process "notify-send" nil 0 nil title message)
+    )
+  (add-hook 'org-pomodoro-started-hook
+            (lambda ()
+              (notify-send "Pomodoro started!" "Vegitable time!")))
+  (add-hook 'org-pomodoro-finished-hook
+            (lambda ()
+              (notify-send "Pomodoro completed!" "Time for a break.")))
+  (add-hook 'org-pomodoro-break-finished-hook
+            (lambda ()
+              (notify-send "Pomodoro Short Break Finished" "Ready for Another?")))
+  (add-hook 'org-pomodoro-long-break-finished-hook
+            (lambda ()
+              (notify-send "Pomodoro Long Break Finished" "Ready for Another?")))
+  (add-hook 'org-pomodoro-killed-hook
+            (lambda ()
+              (notify-send "Pomodoro Killed" "One does not simply kill a pomodoro!")))
+
   ;; C
   (setq-default c-default-style "linux"
                 c-basic-offset 4
                 c-toggle-auto-state 0)
 
   ;; C++
+  (add-hook 'c++-mode-hook 'my-cpp-mode-hook)
+  (defun my-cpp-mode-hook ()
+    (define-key c++-mode-map (kbd "C-c C-f") 'clang-format-buffer)
+    )
+
+  (add-hook 'after-save-hook 'run-clang-format)
+  (defun run-clang-format ()
+    (when (eq major-mode 'c++-mode) (clang-format-buffer)))
 
   ;; Javascript
   (add-to-list 'company-backends 'company-tern)
@@ -443,6 +477,24 @@ layers configuration. You are free to put any user code."
   ;; cmake
   (setq-default cmake-indent 4)
 
+  ;; lsp
+  (add-hook 'rust-mode-hook #'lsp-mode)
+  (with-eval-after-load 'lsp-mode
+    (require 'lsp-flycheck)
+    (require 'lsp-rust))
+  (add-hook 'rust-mode-hook #'lsp-mode)
+
+  ;; latex
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (add-to_list 'org-latex-default-packages-alist '("mathletters" "ucs" nil))
+
+  (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
+  (setq org-latex-listings 'minted)
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
   ;; other
   (load "/usr/share/clang/clang-format.el")
   )
@@ -464,14 +516,28 @@ layers configuration. You are free to put any user code."
  '(company-tooltip-align-annotations t)
  '(company-tooltip-idle-delay 0)
  '(global-company-mode t)
- '(irony-additional-clang-options (quote ("-std=c++11" "-isystem=/usr/include/c++/6.2.1/")))
+ '(irony-additional-clang-options (quote ("-std=c++14" "-isystem=/usr/include/c++/6.2.1/")))
  '(irony-completion-trigger-commands
    (quote
     (c-context-line-break c-scope-operator c-electric-backspace c-electric-brace c-electric-colon c-electric-lt-gt c-electric-paren c-electric-pound c-electric-semi&comma c-electric-slash c-electric-star)))
  '(magit-commit-arguments (quote ("--signoff")))
+ '(org-agenda-files
+   (quote
+    ("~/Org/archive/week.org" "~/Org/archive/month.org" "~/Org/someday.org" "~/Org/today.org" "~/Org/notes.org" "~/Org/gtd.org" "~/Org/inbox.org" "~/Org/noted.org")))
+ '(org-capture-templates
+   (quote
+    (("n" "simple note" entry
+      (file+headline "~/Org/inbox.org" "Inbox")
+      ""))))
+ '(org-default-notes-file "~/Org/inbox.org")
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m org-checklist)))
+ '(org-pomodoro-long-break-length 15)
+ '(org-refile-targets (quote ((org-agenda-files :maxlevel . 1))))
  '(package-selected-packages
    (quote
-    (mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
+    (xkcd web-beautify livid-mode skewer-mode simple-httpd js2-refactor yasnippet multiple-cursors js-doc coffee-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode org-category-capture json-snatcher json-reformat parent-mode epl flx anzu goto-chg undo-tree package-build lsp-mode lsp-rust seq avy f evil s bison-mode haskell-mode org-projectile org-present org alert log4e gntp org-download htmlize gnuplot org-pomodoro fsharp-mode company-quickhelp mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
  '(rtags-path "/home/kk/Programs/rtags/build/bin/")
  '(rtags-use-helm t)
  '(rust-format-on-save t)

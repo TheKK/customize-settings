@@ -34,7 +34,7 @@ endf
 autocmd BufNewFile,BufRead,BufEnter *.frag,*.vert,*.fp,*.vp,*.glsl,*.vs,*.fs set syntax=glsl
 autocmd FileType mail setl spell fo=wantq1 smc=0
 autocmd Filetype gitcommit setlocal spell textwidth=72
-autocmd BufNewFile,BufRead,BufEnter *.md setlocal spell textwidth=81 syntax=markdown wrap
+autocmd BufNewFile,BufRead,BufEnter *.md setlocal spell syntax=markdown wrap
 autocmd FileType javascript set ai sw=2 ts=2 sta et fo=croql
 
 "My command
@@ -99,10 +99,20 @@ Plug 'cespare/vim-toml'
 Plug 'mxw/vim-jsx'
 Plug 'morhetz/gruvbox'
 Plug 'hynek/vim-python-pep8-indent'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'rhysd/vim-clang-format'
+
 
 call plug#end()
 
 " Variables
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ }
+
+" Automatically start language servers.
+let g:LanguageClient_autoStart = 1
 
 " Powerline"
 set nocompatible   " Disable vi-compatibility
