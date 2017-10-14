@@ -11,11 +11,24 @@ values."
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
    dotspacemacs-distribution 'spacemacs
+   ;; Lazy installation of layers (i.e. layers are installed only when a file
+   ;; with a supported type is opened). Possible values are `all', `unused'
+   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
+   ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
+   ;; lazy install any layer that support lazy installation even the layers
+   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
+   ;; installation feature and you have to explicitly list a layer in the
+   ;; variable `dotspacemacs-configuration-layers' to install it.
+   ;; (default 'unused)
+   dotspacemacs-enable-lazy-installation 'nil
+   ;; If non-nil then Spacemacs will ask for confirmation before installing
+   ;; a layer lazily. (default t)
+   dotspacemacs-ask-for-lazy-installation t
+   ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
-   ;; List of configuration layers to load. If it is the symbol `all' instead
-   ;; of a list then all discovered layers will be installed.
+   ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
      javascript
@@ -26,6 +39,7 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     helm
      ;; auto-completion
      ;; better-defaults
      emacs-lisp
@@ -67,8 +81,14 @@ values."
                                       flyspell-correct-helm
                                       flycheck-pos-tip
 
+                                      ;; python
+                                      elpy
+
                                       ;; web-mode
                                       web-mode
+
+                                      ;; company
+                                      company-flx
 
                                       ;; irony
                                       irony
@@ -87,7 +107,11 @@ values."
                                       grizzl
                                       highlight-chars
                                       magit
+                                      srefactor
+
                                       ;; rtags
+                                      rtags
+                                      helm-rtags
 
                                       ;; modes
                                       cmake-mode
@@ -140,13 +164,16 @@ values."
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    dotspacemacs-startup-banner 'official
-   ;; List of items to show in the startup buffer. If nil it is disabled.
-   ;; Possible values are: `recents' `bookmarks' `projects'.
-   ;; (default '(recents projects))
-   dotspacemacs-startup-lists '(recents projects)
-   ;; Number of recent files to show in the startup buffer. Ignored if
-   ;; `dotspacemacs-startup-lists' doesn't include `recents'. (default 5)
-   dotspacemacs-startup-recent-list-size 5
+   ;; List of items to show in startup buffer or an association list of
+   ;; the form `(list-type . list-size)`. If nil then it is disabled.
+   ;; Possible values for list-type are:
+   ;; `recents' `bookmarks' `projects' `agenda' `todos'."
+   ;; List sizes may be nil, in which case
+   ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   dotspacemacs-startup-lists '((projects . 7)
+                                (recents . 5))
+   ;; True if the home buffer should respond to resize events.
+   dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
    ;; Controls fuzzy matching in helm. If set to `always', force fuzzy matching
@@ -168,7 +195,12 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   ;; dotspacemacs-default-font '("Source Code Pro"
+   ;;                             :size 18
+   ;;                             :weight normal
+   ;;                             :width normal
+   ;;                             :powerline-scale 1.1)
+   dotspacemacs-default-font '("hermit"
                                :size 18
                                :weight normal
                                :width normal
@@ -191,14 +223,17 @@ values."
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab nil
-   ;; (Not implemented) dotspacemacs-distinguish-gui-ret nil
-   ;; The command key used for Evil commands (ex-commands) and
-   ;; Emacs commands (M-x).
-   ;; By default the command key is `:' so ex-commands are executed like in Vim
-   ;; with `:' and Emacs commands are executed with `<leader> :'.
-   dotspacemacs-command-key ":"
-   ;; If non nil `Y' is remapped to `y$'. (default t)
-   dotspacemacs-remap-Y-to-y$ t
+   ;; If non nil `Y' is remapped to `y$' in Evil states. (default nil)
+   dotspacemacs-remap-Y-to-y$ nil
+   ;; If non-nil, the shift mappings `<' and `>' retain visual state if used
+   ;; there. (default t)
+   dotspacemacs-retain-visual-state-on-shift t
+   ;; If non-nil, J and K move lines up and down when in visual mode.
+   ;; (default nil)
+   dotspacemacs-visual-line-move-text nil
+   ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
+   ;; (default nil)
+   dotspacemacs-ex-substitute-global nil
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
    ;; If non nil the default layout name is displayed in the mode-line.
@@ -207,6 +242,10 @@ values."
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
    dotspacemacs-auto-resume-layouts nil
+   ;; Size (in MB) above which spacemacs will prompt to open the large file
+   ;; literally to avoid performance issues. Opening a file literally means that
+   ;; no major mode or minor modes are active. (default is 1)
+   dotspacemacs-large-file-size 1
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
@@ -309,6 +348,9 @@ layers configuration. You are free to put any user code."
   ;; Emacs
   (setq-default default-tab-width 4)
 
+  ;; Text-mode
+  (add-hook 'text-mode-hook 'flyspell-mode)
+
   ;; Magit
   (global-set-key (kbd "M-m g s") 'magit-status)
   (global-set-key (kbd "M-m g g") 'magit-dispatch-popup)
@@ -330,15 +372,18 @@ layers configuration. You are free to put any user code."
   (eval-after-load 'company
     '(progn
        (define-key company-active-map (kbd "TAB") 'company-select-next)
-       (define-key company-active-map [tab] 'company-select-next)))
+       (define-key company-active-map [tab] 'company-select-next)
+
+       (define-key company-active-map (kbd "C-n") 'company-select-next)
+       (define-key company-active-map (kbd "C-p") 'company-select-previous)
+       )
+    )
 
   ;; Flycheck
+  (global-flycheck-mode)
   (setq-default flycheck-display-errors-delay 0.1)
 
   ;; irony
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'c++-mode-hook 'irony-mode)
-
   (defun my-irony-mode-hook ()
     (define-key irony-mode-map [remap completion-at-point]
       'irony-completion-at-point-async)
@@ -348,7 +393,6 @@ layers configuration. You are free to put any user code."
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'irony-eldoc)
-  (add-hook 'irony-mode-hook 'flycheck-mode)
 
   (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
 
@@ -386,12 +430,6 @@ layers configuration. You are free to put any user code."
   (evil-define-key 'visual map
     (kbd "C-m") 'evil-mc-skip-and-goto-next-match
     )
-
-  ;; rtags
-  (load "~/Programs/rtags/src/rtags.el")
-  (load "~/Programs/rtags/src/rtags-helm.el")
-
-  (setq rtags-path "~/Programs/rtags/build/bin/")
 
   ;; Racer
   (setq-default racer-cmd "~/.cargo/bin/racer")
@@ -444,10 +482,12 @@ layers configuration. You are free to put any user code."
                 c-toggle-auto-state 0)
 
   ;; C++
-  (add-hook 'c++-mode-hook 'my-cpp-mode-hook)
-  (defun my-cpp-mode-hook ()
-    (define-key c++-mode-map (kbd "C-c C-f") 'clang-format-buffer)
-    )
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (define-key c++-mode-map (kbd "C-c C-f") 'clang-format-buffer)
+              (irony-mode)
+              )
+            )
 
   (add-hook 'after-save-hook 'run-clang-format)
   (defun run-clang-format ()
@@ -461,11 +501,13 @@ layers configuration. You are free to put any user code."
   (global-set-key (kbd "M-m C-c b") 'cargo-process-build)
   (global-set-key (kbd "M-m C-c d") 'cargo-process-doc)
   (global-set-key (kbd "M-m C-c r") 'cargo-process-run)
+  (global-set-key (kbd "M-m C-c t") 'cargo-process-test)
 
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'rust-mode-hook #'flyspell-prog-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
+  ;; (add-hook 'rust-mode-hook 'lsp-mode)
+  (add-hook 'rust-mode-hook 'company-mode)
+  (add-hook 'rust-mode-hook 'racer-mode)
+  (add-hook 'rust-mode-hook 'flyspell-prog-mode)
+  (add-hook 'rust-mode-hook 'eldoc-mode)
 
   (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
 
@@ -474,26 +516,23 @@ layers configuration. You are free to put any user code."
   ;; Javascript
   (setq-default js-indent-level 2)
 
+  ;; Python
+  (elpy-enable)
+  (add-hook 'elpy-mode-hook
+            (lambda ()
+              (define-key elpy-mode-map (kbd "C-c C-f") 'elpy-format-code)
+              (add-hook 'before-save-hook 'elpy-format-code)))
+
   ;; cmake
   (setq-default cmake-indent 4)
 
   ;; lsp
-  (add-hook 'rust-mode-hook #'lsp-mode)
   (with-eval-after-load 'lsp-mode
     (require 'lsp-flycheck)
     (require 'lsp-rust))
-  (add-hook 'rust-mode-hook #'lsp-mode)
 
-  ;; latex
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (add-to_list 'org-latex-default-packages-alist '("mathletters" "ucs" nil))
-
-  (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
-  (setq org-latex-listings 'minted)
-  (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  ;; helm
+  (require 'helm-bookmark)
 
   ;; other
   (load "/usr/share/clang/clang-format.el")
@@ -509,18 +548,27 @@ layers configuration. You are free to put any user code."
  '(auto-save-list-file-prefix "/home/kk/.emacs.d/.cache/auto-save/")
  '(company-auto-complete t)
  '(company-auto-complete-chars nil)
- '(company-idle-delay 0.3)
+ '(company-idle-delay 0.5)
  '(company-minimum-prefix-length 3)
  '(company-rtags-begin-after-member-access nil)
  '(company-selection-wrap-around t)
  '(company-tooltip-align-annotations t)
  '(company-tooltip-idle-delay 0)
+ '(elpy-rpc-backend "jedi")
+ '(elpy-rpc-python-command "python3")
+ '(evil-want-Y-yank-to-eol nil)
+ '(flycheck-jshintrc "~/.jshintrc")
  '(global-company-mode t)
  '(irony-additional-clang-options (quote ("-std=c++14" "-isystem=/usr/include/c++/6.2.1/")))
+ '(irony-cdb-search-directory-list (quote ("." "build" "~/")))
  '(irony-completion-trigger-commands
    (quote
     (c-context-line-break c-scope-operator c-electric-backspace c-electric-brace c-electric-colon c-electric-lt-gt c-electric-paren c-electric-pound c-electric-semi&comma c-electric-slash c-electric-star)))
- '(magit-commit-arguments (quote ("--signoff")))
+ '(magit-commit-arguments nil)
+ '(magit-diff-arguments (quote ("--function-context" "--no-ext-diff" "--stat")))
+ '(magit-log-arguments
+   (quote
+    ("--graph" "--color" "--decorate" "--show-signature" "-n256")))
  '(org-agenda-files
    (quote
     ("~/Org/archive/week.org" "~/Org/archive/month.org" "~/Org/someday.org" "~/Org/today.org" "~/Org/notes.org" "~/Org/gtd.org" "~/Org/inbox.org" "~/Org/noted.org")))
@@ -537,12 +585,14 @@ layers configuration. You are free to put any user code."
  '(org-refile-targets (quote ((org-agenda-files :maxlevel . 1))))
  '(package-selected-packages
    (quote
-    (xkcd web-beautify livid-mode skewer-mode simple-httpd js2-refactor yasnippet multiple-cursors js-doc coffee-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode org-category-capture json-snatcher json-reformat parent-mode epl flx anzu goto-chg undo-tree package-build lsp-mode lsp-rust seq avy f evil s bison-mode haskell-mode org-projectile org-present org alert log4e gntp org-download htmlize gnuplot org-pomodoro fsharp-mode company-quickhelp mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
- '(rtags-path "/home/kk/Programs/rtags/build/bin/")
+    (winum hide-comnt elpy find-file-in-project ivy company-flx srefactor helm-rtags flycheck-rtags company-rtags xkcd web-beautify livid-mode skewer-mode simple-httpd js2-refactor yasnippet multiple-cursors js-doc coffee-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode org-category-capture json-snatcher json-reformat parent-mode epl flx anzu goto-chg undo-tree package-build lsp-mode lsp-rust seq avy f evil s bison-mode haskell-mode org-projectile org-present org alert log4e gntp org-download htmlize gnuplot org-pomodoro fsharp-mode company-quickhelp mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
+ '(python-shell-interpreter "ipython")
  '(rtags-use-helm t)
  '(rust-format-on-save t)
  '(savehist-autosave-interval 60)
+ '(tooltip-hide-delay 100)
  '(use-package-inject-hooks t)
+ '(x-gtk-use-system-tooltips nil)
  '(ycmd-eldoc-always-semantic-server-query-modes t)
  '(ycmd-global-config "/home/kk/.ycm_extra_conf.py")
  '(ycmd-min-num-chars-for-completion 0))
@@ -551,4 +601,4 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(lsp-face-highlight-textual ((t (:background "dim gray")))))
