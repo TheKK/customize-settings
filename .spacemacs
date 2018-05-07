@@ -31,7 +31,6 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     javascript
      html
      markdown
      ;; ----------------------------------------------------------------
@@ -40,6 +39,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
+     ;; ivy
      ;; auto-completion
      ;; better-defaults
      emacs-lisp
@@ -59,7 +59,10 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
                                       ;; lsp
+                                      lsp-mode
+                                      lsp-ui
                                       lsp-rust
+                                      company-lsp
 
                                       ;; rust
                                       cargo
@@ -67,12 +70,24 @@ values."
                                       racer
                                       rust-mode
 
+                                      ;; csharp
+                                      csharp-mode
+
+                                      ;; elm
+                                      elm-mode
+                                      flycheck-elm
+
                                       ;; json
                                       json-mode
 
                                       ;; javascript
                                       tern
+                                      js2-mode
+                                      js2-refactor
                                       company-tern
+
+                                      ;; typescript
+                                      tide
 
                                       ;; glsl
                                       glsl-mode
@@ -112,9 +127,12 @@ values."
                                       ;; rtags
                                       rtags
                                       helm-rtags
+                                      company-rtags
+                                      flycheck-rtags
 
                                       ;; modes
                                       cmake-mode
+                                      pkgbuild-mode
                                       markdown-mode
                                       protobuf-mode
                                       toml-mode
@@ -207,6 +225,8 @@ values."
                                :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
+   ;; The command-key
+   dotspacemacs-command-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
    dotspacemacs-emacs-leader-key "M-m"
@@ -460,6 +480,12 @@ layers configuration. You are free to put any user code."
   (defun notify-send (title message)
     (call-process "notify-send" nil 0 nil title message)
     )
+
+  (defun save-all-org-buffer-and-notify (title message)
+    (org-save-all-org-buffers)
+    (notify-send title message)
+    )
+
   (add-hook 'org-pomodoro-started-hook
             (lambda ()
               (notify-send "Pomodoro started!" "Vegitable time!")))
@@ -493,8 +519,36 @@ layers configuration. You are free to put any user code."
   (defun run-clang-format ()
     (when (eq major-mode 'c++-mode) (clang-format-buffer)))
 
+  (add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
+
   ;; Javascript
   (add-to-list 'company-backends 'company-tern)
+  (add-to-list 'flycheck-disabled-checkers 'javascript-jshint)
+
+  ;; Typescript
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+  ;; Elm
+  (add-to-list 'company-backends 'company-elm)
+  (add-hook 'flycheck-mode-hook 'flycheck-elm-setup)
 
   ;; Rust
   (global-set-key (kbd "M-m C-c B") 'cargo-process-bench)
@@ -528,11 +582,20 @@ layers configuration. You are free to put any user code."
 
   ;; lsp
   (with-eval-after-load 'lsp-mode
+    (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
+
+    (require 'lsp-ui)
     (require 'lsp-flycheck)
     (require 'lsp-rust))
 
+  (require 'company-lsp)
+  (add-to-list 'company-backends 'company-lsp)
+
   ;; helm
   (require 'helm-bookmark)
+
+  ;; rtags
+  (require 'flycheck-rtags)
 
   ;; other
   (load "/usr/share/clang/clang-format.el")
@@ -549,6 +612,7 @@ layers configuration. You are free to put any user code."
  '(company-auto-complete t)
  '(company-auto-complete-chars nil)
  '(company-idle-delay 0.5)
+ '(company-lsp-async t)
  '(company-minimum-prefix-length 3)
  '(company-rtags-begin-after-member-access nil)
  '(company-selection-wrap-around t)
@@ -557,39 +621,51 @@ layers configuration. You are free to put any user code."
  '(elpy-rpc-backend "jedi")
  '(elpy-rpc-python-command "python3")
  '(evil-want-Y-yank-to-eol nil)
- '(flycheck-jshintrc "~/.jshintrc")
+ '(flycheck-jshintrc nil)
  '(global-company-mode t)
  '(irony-additional-clang-options (quote ("-std=c++14" "-isystem=/usr/include/c++/6.2.1/")))
  '(irony-cdb-search-directory-list (quote ("." "build" "~/")))
  '(irony-completion-trigger-commands
    (quote
     (c-context-line-break c-scope-operator c-electric-backspace c-electric-brace c-electric-colon c-electric-lt-gt c-electric-paren c-electric-pound c-electric-semi&comma c-electric-slash c-electric-star)))
- '(magit-commit-arguments nil)
+ '(magit-commit-arguments (quote ("--gpg-sign=B37E75CC529BF418")))
  '(magit-diff-arguments (quote ("--function-context" "--no-ext-diff" "--stat")))
  '(magit-log-arguments
    (quote
     ("--graph" "--color" "--decorate" "--show-signature" "-n256")))
- '(org-agenda-files
-   (quote
-    ("~/Org/archive/week.org" "~/Org/archive/month.org" "~/Org/someday.org" "~/Org/today.org" "~/Org/notes.org" "~/Org/gtd.org" "~/Org/inbox.org" "~/Org/noted.org")))
+ '(org-agenda-clockreport-parameter-plist (quote (:link t :maxlevel 5)))
+ '(org-agenda-files (quote ("~/Org/notes.org" "~/Org/inbox.org")))
  '(org-capture-templates
    (quote
     (("n" "simple note" entry
       (file+headline "~/Org/inbox.org" "Inbox")
       ""))))
+ '(org-clocktable-defaults
+   (quote
+    (:maxlevel 4 :lang "en" :scope file :block nil :wstart 1 :mstart 1 :tstart nil :tend nil :step nil :stepskip0 nil :fileskip0 nil :tags nil :emphasize nil :link nil :narrow 40! :indent t :formula nil :timestamp nil :level nil :tcolumns nil :formatter nil)))
  '(org-default-notes-file "~/Org/inbox.org")
+ '(org-file-apps
+   (quote
+    ((auto-mode . emacs)
+     ("\\.mm\\'" . default)
+     ("\\.x?html?\\'" . default)
+     ("\\.pdf\\'" . "evince %s"))))
  '(org-modules
    (quote
     (org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m org-checklist)))
+ '(org-pomodoro-audio-player "/usr/bin/mpv --volume 50")
+ '(org-pomodoro-killed-sound-p nil)
  '(org-pomodoro-long-break-length 15)
- '(org-refile-targets (quote ((org-agenda-files :maxlevel . 1))))
+ '(org-pomodoro-start-sound-p t)
+ '(org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
  '(package-selected-packages
    (quote
-    (winum hide-comnt elpy find-file-in-project ivy company-flx srefactor helm-rtags flycheck-rtags company-rtags xkcd web-beautify livid-mode skewer-mode simple-httpd js2-refactor yasnippet multiple-cursors js-doc coffee-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode org-category-capture json-snatcher json-reformat parent-mode epl flx anzu goto-chg undo-tree package-build lsp-mode lsp-rust seq avy f evil s bison-mode haskell-mode org-projectile org-present org alert log4e gntp org-download htmlize gnuplot org-pomodoro fsharp-mode company-quickhelp mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
- '(python-shell-interpreter "ipython")
+    (org-mime wgrep smex ivy-hydra counsel-projectile counsel swiper lsp-ui ghub let-alist tide typescript-mode pkgbuild-mode flycheck-elm elm-mode csharp-mode company-lsp winum hide-comnt elpy find-file-in-project ivy company-flx srefactor helm-rtags flycheck-rtags company-rtags xkcd web-beautify livid-mode skewer-mode simple-httpd js2-refactor yasnippet multiple-cursors js-doc coffee-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode org-category-capture json-snatcher json-reformat parent-mode epl flx anzu goto-chg undo-tree package-build lsp-mode lsp-rust seq avy f evil s bison-mode haskell-mode org-projectile org-present org alert log4e gntp org-download htmlize gnuplot org-pomodoro fsharp-mode company-quickhelp mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
+ '(rtags-path "~/Programs/rtags/build/bin")
  '(rtags-use-helm t)
  '(rust-format-on-save t)
  '(savehist-autosave-interval 60)
+ '(tab-width 8)
  '(tooltip-hide-delay 100)
  '(use-package-inject-hooks t)
  '(x-gtk-use-system-tooltips nil)

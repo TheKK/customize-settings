@@ -16,6 +16,7 @@ TARGETS=(
         ~/.screenlayout
         ~/Scripts
         ~/.clang-format
+        ~/.gnupg/gpg-agent.conf
 )
 
 TARGETS_LEN=${#TARGETS[@]}

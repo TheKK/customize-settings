@@ -94,22 +94,32 @@ Plug 'marijnh/tern_for_vim'
 Plug 'Shutnik/jshint2.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'rdnetto/YCM-Generator'
 Plug 'cespare/vim-toml'
 Plug 'mxw/vim-jsx'
 Plug 'morhetz/gruvbox'
 Plug 'hynek/vim-python-pep8-indent'
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'rhysd/vim-clang-format'
-
+Plug 'elmcast/elm-vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'junegunn/fzf'
+" (Completion plugin option 2)
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
 " Variables
 
+" Language server neovim
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
     \ }
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1

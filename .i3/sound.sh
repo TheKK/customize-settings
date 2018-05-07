@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SINK_NO=0
+SINK_NO="alsa_output.pci-0000_00_1b.0.analog-stereo"
 
 has_pulseaudio() {
         if [ "$(pgrep -c pulseaudio)" -eq 1 ]; then
@@ -14,24 +14,32 @@ sendNotify() {
         notify-send -t 1 "$1"
 }
 
+get_current_vol() {
+    amixer get Master \
+      | grep --color=never % \
+      | awk '{print $5}' \
+      | sed 's/[^0-9+\%]//g'
+}
+
+notify_current_vol() {
+    local current_vol
+    current_vol=$(get_current_vol)
+
+    sendNotify \
+    "Master Vol:
+$current_vol"
+}
+
 toggle_mute() {
-        is_muted=''
+        amixer sset Master toggle
 
-        if [ "$(has_pulseaudio)" == 'true' ]; then
-                pactl set-sink-mute $SINK_NO toggle
+        local is_muted
+        is_muted=$(amixer get Master | grep '\[off\]' >> /dev/null && echo $?)
 
-                is_muted=$(pactl list sinks | sed -n -e "/Sink #$SINK_NO/,\$p" | grep '^\sMute' | awk '{print $2}')
-        else
-                amixer -q sset Master toggle
-
-                sendNotify 'jlsdjld'
-                is_muted=$(amixer -1 get Master | grep -P '[on]')
-        fi
-
-        if [ "$is_muted" == 'yes' ]; then
+        if [ "$is_muted" == 0 ]; then
                 sendNotify "Muted"
         else
-                sendNotify "Unmuted"
+                notify_current_vol
         fi
 }
 
@@ -41,13 +49,11 @@ raise_vol() {
         if [ "$(has_pulseaudio)" == 'true' ]; then
                 pactl set-sink-mute $SINK_NO false
                 pactl set-sink-volume $SINK_NO +5%
-
-                current_vol=$(pactl list sinks | sed -n -e "/Sink #$SINK_NO/,\$p" | grep '^\sVolume:' | awk '{print $5}')
         else
                 sendNotify 'Under construction...'
         fi
 
-        sendNotify "Master Vol: $current_vol"
+        notify_current_vol
 }
 
 decrease_vol() {
@@ -56,13 +62,11 @@ decrease_vol() {
         if [ "$(has_pulseaudio)" == 'true' ]; then
                 pactl set-sink-mute $SINK_NO false
                 pactl set-sink-volume $SINK_NO -5%
-
-                current_vol=$(pactl list sinks | sed -n -e "/Sink #$SINK_NO/,\$p" | grep '^\sVolume:' | awk '{print $5}')
         else
                 sendNotify 'Under construction...'
         fi
 
-        sendNotify "Master Vol: $current_vol"
+        notify_current_vol
 }
 
 set_vol() {
@@ -71,13 +75,11 @@ set_vol() {
         if [ "$(has_pulseaudio)" == 'true' ]; then
                 pactl set-sink-mute $SINK_NO false
                 pactl set-sink-volume $SINK_NO "$1%"
-
-                current_vol=$(pactl list sinks | sed -n -e "/Sink #$SINK_NO/,\$p" | grep '^\sVolume:' | awk '{print $5}')
         else
                 sendNotify 'Under construction...'
         fi
 
-        sendNotify "Master Vol: $current_vol"
+        notify_current_vol
 }
 
 if [ "$1" == 'raise' ]; then
