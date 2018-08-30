@@ -62,7 +62,11 @@ values."
                                       lsp-mode
                                       lsp-ui
                                       lsp-rust
+                                      lsp-haskell
                                       company-lsp
+
+                                      ;; c++
+                                      cquery
 
                                       ;; rust
                                       cargo
@@ -105,13 +109,6 @@ values."
                                       ;; company
                                       company-flx
 
-                                      ;; irony
-                                      irony
-                                      irony-eldoc
-                                      company-irony
-                                      flycheck-irony
-                                      company-irony-c-headers
-
                                       ;; tools
                                       ag
                                       avy
@@ -120,15 +117,10 @@ values."
                                       flycheck
                                       golden-ratio
                                       grizzl
-                                      highlight-chars
                                       magit
-                                      srefactor
 
-                                      ;; rtags
-                                      rtags
-                                      helm-rtags
-                                      company-rtags
-                                      flycheck-rtags
+                                      ;; haskell
+                                      haskell-mode
 
                                       ;; modes
                                       cmake-mode
@@ -368,6 +360,9 @@ layers configuration. You are free to put any user code."
   ;; Emacs
   (setq-default default-tab-width 4)
 
+  (global-key-binding (kbd "<f12>") 'xref-find-definitions)
+  (global-key-binding (kbd "<f2>") 'lsp-rename)
+
   ;; Text-mode
   (add-hook 'text-mode-hook 'flyspell-mode)
 
@@ -384,39 +379,35 @@ layers configuration. You are free to put any user code."
   (setq-default projectile-enable-caching t)
   (setq-default projectile-completion-system 'grizzl)
 
+  ;; cpp
+  (add-hook 'c++-mode-hook 'lsp-cquery-enable)
+
+  (eval-after-load 'c++-mode
+    (lambda ()
+      (define-key c++-mode-map (kbd "<f12>") 'xref-find-definitions)
+      (define-key c++-mode-map (kbd "<f2>") 'lsp-rename)
+    ))
+
   ;; Company
-  (setq-default company-idle-delay 0.3)
+  (setq-default company-idle-delay 0.1)
   (setq-default company-minimum-prefix-length 1)
   (setq-default company-selection-wrap-around t)
-  (global-company-mode 1)
-  (eval-after-load 'company
-    '(progn
-       (define-key company-active-map (kbd "TAB") 'company-select-next)
-       (define-key company-active-map [tab] 'company-select-next)
 
-       (define-key company-active-map (kbd "C-n") 'company-select-next)
-       (define-key company-active-map (kbd "C-p") 'company-select-previous)
-       )
-    )
+  (eval-after-load 'company-mode
+    (lambda ()
+      (add-to-list company-backends 'company-elm)
+      (add-to-list 'company-backends 'company-lsp)
+
+
+      (define-key company-active-map (kbd "TAB") 'company-select-next)
+      (define-key company-active-map [tab] 'company-select-next)
+      (define-key company-active-map (kbd "C-n") 'company-select-next)
+      (define-key company-active-map (kbd "C-p") 'company-select-previous)
+      ))
+
 
   ;; Flycheck
-  (global-flycheck-mode)
   (setq-default flycheck-display-errors-delay 0.1)
-
-  ;; irony
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'irony-mode-hook 'irony-eldoc)
-
-  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
-
-  (add-to-list 'company-backends '(company-irony-c-headers company-irony))
 
   ;; golden-ratio-mode
   (golden-ratio-mode 1)
@@ -466,7 +457,7 @@ layers configuration. You are free to put any user code."
   (setq flyspell-issue-message-flag nil)
 
   ;; flyspell correction
-  (global-set-key (kbd "C-c c") 'flyspell-correct-word-generic)
+  (global-set-key (kbd "C-c c") 'flyspell-correct-word-at-point)
   (with-eval-after-load 'flycheck
     (flycheck-pos-tip-mode))
 
@@ -507,23 +498,9 @@ layers configuration. You are free to put any user code."
                 c-basic-offset 4
                 c-toggle-auto-state 0)
 
-  ;; C++
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (define-key c++-mode-map (kbd "C-c C-f") 'clang-format-buffer)
-              (irony-mode)
-              )
-            )
-
   (add-hook 'after-save-hook 'run-clang-format)
   (defun run-clang-format ()
     (when (eq major-mode 'c++-mode) (clang-format-buffer)))
-
-  (add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
-
-  ;; Javascript
-  (add-to-list 'company-backends 'company-tern)
-  (add-to-list 'flycheck-disabled-checkers 'javascript-jshint)
 
   ;; Typescript
   (defun setup-tide-mode ()
@@ -546,8 +523,11 @@ layers configuration. You are free to put any user code."
 
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
 
+  ;; Haskell
+  (add-hook 'haskell-mode-hook #'lsp-haskell-enable)
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+
   ;; Elm
-  (add-to-list 'company-backends 'company-elm)
   (add-hook 'flycheck-mode-hook 'flycheck-elm-setup)
 
   ;; Rust
@@ -565,8 +545,6 @@ layers configuration. You are free to put any user code."
 
   (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
 
-  (setq company-tooltip-align-annotations t)
-
   ;; Javascript
   (setq-default js-indent-level 2)
 
@@ -580,101 +558,32 @@ layers configuration. You are free to put any user code."
   ;; cmake
   (setq-default cmake-indent 4)
 
+  ;; cquery
+  (setq-default cquery-executable "cquery")
+  (setq-default cquery-extra-init-params '(:completion (:detailedLabel t)))
+
   ;; lsp
-  (with-eval-after-load 'lsp-mode
-    (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
+  (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil)
 
-    (require 'lsp-ui)
-    (require 'lsp-flycheck)
-    (require 'lsp-rust))
-
-  (require 'company-lsp)
-  (add-to-list 'company-backends 'company-lsp)
-
-  ;; helm
-  (require 'helm-bookmark)
-
-  ;; rtags
-  (require 'flycheck-rtags)
 
   ;; other
   (load "/usr/share/clang/clang-format.el")
   )
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(auto-save-default nil)
- '(auto-save-list-file-prefix "/home/kk/.emacs.d/.cache/auto-save/")
- '(company-auto-complete t)
- '(company-auto-complete-chars nil)
- '(company-idle-delay 0.5)
- '(company-lsp-async t)
- '(company-minimum-prefix-length 3)
- '(company-rtags-begin-after-member-access nil)
- '(company-selection-wrap-around t)
- '(company-tooltip-align-annotations t)
- '(company-tooltip-idle-delay 0)
- '(elpy-rpc-backend "jedi")
- '(elpy-rpc-python-command "python3")
- '(evil-want-Y-yank-to-eol nil)
- '(flycheck-jshintrc nil)
- '(global-company-mode t)
- '(irony-additional-clang-options (quote ("-std=c++14" "-isystem=/usr/include/c++/6.2.1/")))
- '(irony-cdb-search-directory-list (quote ("." "build" "~/")))
- '(irony-completion-trigger-commands
+ '(flycheck-checkers
    (quote
-    (c-context-line-break c-scope-operator c-electric-backspace c-electric-brace c-electric-colon c-electric-lt-gt c-electric-paren c-electric-pound c-electric-semi&comma c-electric-slash c-electric-star)))
- '(magit-commit-arguments (quote ("--gpg-sign=B37E75CC529BF418")))
- '(magit-diff-arguments (quote ("--function-context" "--no-ext-diff" "--stat")))
- '(magit-log-arguments
-   (quote
-    ("--graph" "--color" "--decorate" "--show-signature" "-n256")))
- '(org-agenda-clockreport-parameter-plist (quote (:link t :maxlevel 5)))
- '(org-agenda-files (quote ("~/Org/notes.org" "~/Org/inbox.org")))
- '(org-capture-templates
-   (quote
-    (("n" "simple note" entry
-      (file+headline "~/Org/inbox.org" "Inbox")
-      ""))))
- '(org-clocktable-defaults
-   (quote
-    (:maxlevel 4 :lang "en" :scope file :block nil :wstart 1 :mstart 1 :tstart nil :tend nil :step nil :stepskip0 nil :fileskip0 nil :tags nil :emphasize nil :link nil :narrow 40! :indent t :formula nil :timestamp nil :level nil :tcolumns nil :formatter nil)))
- '(org-default-notes-file "~/Org/inbox.org")
- '(org-file-apps
-   (quote
-    ((auto-mode . emacs)
-     ("\\.mm\\'" . default)
-     ("\\.x?html?\\'" . default)
-     ("\\.pdf\\'" . "evince %s"))))
- '(org-modules
-   (quote
-    (org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m org-checklist)))
- '(org-pomodoro-audio-player "/usr/bin/mpv --volume 50")
- '(org-pomodoro-killed-sound-p nil)
- '(org-pomodoro-long-break-length 15)
- '(org-pomodoro-start-sound-p t)
- '(org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
+    (elm tsx-tide typescript-tide ada-gnat asciidoctor asciidoc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cwl d-dmd dockerfile-hadolint emacs-lisp emacs-lisp-checkdoc erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby javascript-tide jsx-tide)))
  '(package-selected-packages
    (quote
-    (org-mime wgrep smex ivy-hydra counsel-projectile counsel swiper lsp-ui ghub let-alist tide typescript-mode pkgbuild-mode flycheck-elm elm-mode csharp-mode company-lsp winum hide-comnt elpy find-file-in-project ivy company-flx srefactor helm-rtags flycheck-rtags company-rtags xkcd web-beautify livid-mode skewer-mode simple-httpd js2-refactor yasnippet multiple-cursors js-doc coffee-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode org-category-capture json-snatcher json-reformat parent-mode epl flx anzu goto-chg undo-tree package-build lsp-mode lsp-rust seq avy f evil s bison-mode haskell-mode org-projectile org-present org alert log4e gntp org-download htmlize gnuplot org-pomodoro fsharp-mode company-quickhelp mmm-mode markdown-toc gh-md company-irony-c-headers packed bind-map company-tern dash-functional tern js2-mode yaml-mode protobuf-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic rtags irony-eldoc flycheck-irony company-irony irony which-key web-mode use-package toml-mode spaceline powerline restart-emacs racer persp-mode pcre2el paradox spinner org-plus-contrib neotree magit magit-popup git-commit with-editor macrostep info+ hydra hungry-delete hl-todo helm-make helm-ag flyspell-correct-helm flyspell-correct flycheck-pos-tip eyebrowse expand-region evil-surround evil-nerd-commenter evil-mc evil-matchit dumb-jump company-ycmd company cargo rust-mode aggressive-indent ag ace-link iedit smartparens highlight ycmd request flycheck dash projectile helm helm-core async spacemacs-theme ws-butler window-numbering volatile-highlights vi-tilde-fringe uuidgen toc-org request-deferred rainbow-delimiters quelpa pos-tip popwin popup pkg-info org-bullets open-junk-file move-text markdown-mode lorem-ipsum linum-relative link-hint json-mode indent-guide ido-vertical-mode highlight-parentheses highlight-numbers highlight-indentation highlight-chars help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds grizzl google-translate golden-ratio glsl-mode flycheck-ycmd flycheck-rust flx-ido fill-column-indicator fancy-battery exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish define-word column-enforce-mode cmake-mode clean-aindent-mode bind-key auto-highlight-symbol auto-compile adaptive-wrap ace-window ace-jump-helm-line)))
- '(rtags-path "~/Programs/rtags/build/bin")
- '(rtags-use-helm t)
- '(rust-format-on-save t)
- '(savehist-autosave-interval 60)
- '(tab-width 8)
- '(tooltip-hide-delay 100)
- '(use-package-inject-hooks t)
- '(x-gtk-use-system-tooltips nil)
- '(ycmd-eldoc-always-semantic-server-query-modes t)
- '(ycmd-global-config "/home/kk/.ycm_extra_conf.py")
- '(ycmd-min-num-chars-for-completion 0))
+    (powerline spinner org-category-capture alert log4e gntp let-alist with-editor json-snatcher json-reformat multiple-cursors js2-mode hydra parent-mode haskell-mode haml-mode flyspell-correct pos-tip flycheck pkg-info epl iedit anzu evil goto-chg undo-tree highlight yasnippet f dash-functional tern flx company markdown-mode rust-mode bind-map bind-key packed s dash helm-core popup async cquery web-mode tide magit ghub elpy ivy cargo smartparens helm avy lsp-mode projectile org-plus-contrib yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package typescript-mode toml-mode toc-org tagedit srefactor spaceline slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters racer pyvenv pug-mode protobuf-mode popwin pkgbuild-mode persp-mode pcre2el paradox org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-popup macrostep lsp-ui lsp-rust lsp-haskell lorem-ipsum linum-relative link-hint less-css-mode json-mode js2-refactor indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-chars helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-ag grizzl google-translate golden-ratio gnuplot glsl-mode git-commit gh-md flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-elm flx-ido find-file-in-project fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode elm-mode elisp-slime-nav dumb-jump diminish define-word csharp-mode company-tern company-lsp company-flx column-enforce-mode cmake-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent ag adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(lsp-face-highlight-textual ((t (:background "dim gray")))))
+ )

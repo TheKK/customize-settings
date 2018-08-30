@@ -42,11 +42,9 @@ com! EditRc tabnew ~/.vimrc
 com! Uz source ~/.vimrc
 
 "My Key Mapping"
-noremap <F2> :set spell!<cr>
 noremap <F3> :set number!<cr>
 noremap <F4> :NERDTreeToggle<cr>
 
-noremap <F5> :lnext<CR>
 noremap <F6> :lprevious<CR>
 
 noremap <F7> gT
@@ -69,7 +67,7 @@ map  N <Plug>(easymotion-prev)
 " Plugs
 call plug#begin('~/.vim/plugged')
 
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'guns/xterm-color-table.vim'
@@ -102,32 +100,40 @@ Plug 'rhysd/vim-clang-format'
 Plug 'elmcast/elm-vim'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
+    \ 'do': './install.sh',
     \ }
 Plug 'junegunn/fzf'
-" (Completion plugin option 2)
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
 " Variables
+let g:deoplete#enable_at_startup = 1
 
 " Language server neovim
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'haskell': ['hie-wrapper', '--lsp', '-r', getcwd()],
     \ }
-
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-
-" Automatically start language servers.
-let g:LanguageClient_autoStart = 1
 
 " Powerline"
 set nocompatible   " Disable vi-compatibility
 set laststatus=2   " Always show the statusline
 set encoding=utf-8 " Necessary to show Unicode glyphs
+
+" LSP stuffs
+let g:LanguageClient_loadSettings = 1
+let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
+set completefunc=LanguageClient#complete
+set formatexpr=LanguageClient_textDocument_rangeFormatting()
+
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
+nnoremap <silent> gs :call LanguageClient#textDocument_documentSymbol()<CR>
+
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+nnoremap <silent> <F5> :call LanguageClient_contextMenu()<CR>
 
 let g:Powerline_symbols='fancy'
 let g:Powerline_colorscheme = 'solarized256'
@@ -148,12 +154,6 @@ let g:syntastic_enable_signs = 1
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
-
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_filepath_completion_use_working_dir = 1
-let g:ycm_key_invoke_completion = '<C-Return>'
-let g:ycm_warning_symbol = '>>'
 
 let g:tagbar_autofocus = 1
 let g:tagbar_sort = 0

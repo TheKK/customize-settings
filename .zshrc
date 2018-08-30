@@ -65,6 +65,7 @@ export PATH="$PATH:$HOME/.cabal/bin"
 export PATH="$PATH:$HOME/.go/bin"
 export PATH="$PATH:$HOME/Apps/git-cinnabar"
 export PATH="$PATH:$HOME/.yarn/bin"
+export PATH="$PATH:$HOME/.local/bin"
 source ~/.cargo/env > /dev/null
 
 # # Preferred editor for local and remote sessions

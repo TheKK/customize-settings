@@ -179,12 +179,18 @@ client.background #121212
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-new_window normal
-new_float normal
-focus_follows_mouse no
 
+# Workspace related
+default_border normal
+default_floating_border pixel 3
+for_window [floating] border pixel 3
+
+focus_follows_mouse no
+workspace_layout tabbed
+
+# Change border layout
 bindsym $mod+F10 border none
-bindsym $mod+F11 border 1pixel
+bindsym $mod+F11 border pixel 1
 bindsym $mod+F12 border normal
 
 #Workspace move
