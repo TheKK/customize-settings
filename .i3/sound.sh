@@ -11,7 +11,7 @@ has_pulseaudio() {
 }
 
 sendNotify() {
-        notify-send -t 1 "$1"
+        notify-send "$1"
 }
 
 get_current_vol() {

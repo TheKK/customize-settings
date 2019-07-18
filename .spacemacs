@@ -1,7 +1,3 @@
-;; -*- mode: emacs-lisp -*-
-;; This file is loaded by Spacemacs at startup.
-;; It must be stored in your home directory.
-
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
@@ -31,27 +27,22 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     html
-     markdown
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     ;; ivy
+     elm
+     markdown
+     emacs-lisp
+     org
+     purescript
+     git
      ;; auto-completion
      ;; better-defaults
-     emacs-lisp
      ;; git
-     ;; markdown
-     org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
      ;; syntax-checking
-     ;; version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -59,30 +50,22 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
                                       ;; lsp
+                                      eglot
                                       lsp-mode
                                       lsp-ui
                                       lsp-rust
                                       lsp-haskell
                                       company-lsp
 
-                                      ;; c++
-                                      cquery
+                                      ;; C/C++
+                                      ccls
+                                      clang-format
 
                                       ;; rust
                                       cargo
                                       flycheck-rust
                                       racer
                                       rust-mode
-
-                                      ;; csharp
-                                      csharp-mode
-
-                                      ;; elm
-                                      elm-mode
-                                      flycheck-elm
-
-                                      ;; json
-                                      json-mode
 
                                       ;; javascript
                                       tern
@@ -93,21 +76,15 @@ values."
                                       ;; typescript
                                       tide
 
-                                      ;; glsl
-                                      glsl-mode
-
-                                      ;; spell checking
-                                      flyspell-correct-helm
-                                      flycheck-pos-tip
-
                                       ;; python
                                       elpy
 
-                                      ;; web-mode
-                                      web-mode
-
                                       ;; company
                                       company-flx
+
+                                      ;; writing
+                                      olivetti
+                                      focus
 
                                       ;; tools
                                       ag
@@ -117,18 +94,23 @@ values."
                                       flycheck
                                       golden-ratio
                                       grizzl
-                                      magit
 
-                                      ;; haskell
-                                      haskell-mode
+                                      ;; elm
+                                      elm-mode
 
                                       ;; modes
+                                      bazel-mode
+                                      haskell-mode
                                       cmake-mode
                                       pkgbuild-mode
                                       markdown-mode
                                       protobuf-mode
                                       toml-mode
                                       yaml-mode
+                                      csharp-mode
+                                      json-mode
+                                      glsl-mode
+                                      web-mode
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(
@@ -158,12 +140,20 @@ values."
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
-   ;; when the current branch is not `develop'. (default t)
-   dotspacemacs-check-for-update t
-   ;; One of `vim', `emacs' or `hybrid'. Evil is always enabled but if the
-   ;; variable is `emacs' then the `holy-mode' is enabled at startup. `hybrid'
-   ;; uses emacs key bindings for vim's insert mode, but otherwise leaves evil
-   ;; unchanged. (default 'vim)
+   ;; when the current branch is not `develop'. Note that checking for
+   ;; new versions works via git commands, thus it calls GitHub services
+   ;; whenever you start Emacs. (default nil)
+   dotspacemacs-check-for-update nil
+   ;; If non-nil, a form that evaluates to a package directory. For example, to
+   ;; use different package directories for different Emacs versions, set this
+   ;; to `emacs-version'.
+   dotspacemacs-elpa-subdirectory nil
+   ;; One of `vim', `emacs' or `hybrid'.
+   ;; `hybrid' is like `vim' except that `insert state' is replaced by the
+   ;; `hybrid state' with `emacs' key bindings. The value can also be a list
+   ;; with `:variables' keyword (similar to layers). Check the editing styles
+   ;; section of the documentation for details on available variables.
+   ;; (default 'vim)
    dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
@@ -180,17 +170,12 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((projects . 7)
-                                (recents . 5))
+   dotspacemacs-startup-lists '((recents . 5)
+                                (projects . 7))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
-   ;; Controls fuzzy matching in helm. If set to `always', force fuzzy matching
-   ;; in all non-asynchronous sources. If set to `source', preserve individual
-   ;; source settings. Else, disable fuzzy matching in all sources.
-   ;; (default 'always)
-   dotspacemacs-helm-use-fuzzy 'source
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
@@ -210,15 +195,18 @@ values."
    ;;                             :weight normal
    ;;                             :width normal
    ;;                             :powerline-scale 1.1)
-   dotspacemacs-default-font '("hermit"
+   dotspacemacs-default-font '("Hack"
                                :size 18
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
-   ;; The command-key
-   dotspacemacs-command-key "SPC"
+   ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
+   ;; (default "SPC")
+   dotspacemacs-emacs-command-key "SPC"
+   ;; The key used for Vim Ex commands (default ":")
+   dotspacemacs-ex-command-key ":"
    ;; The leader key accessible in `emacs state' and `insert state'
    ;; (default "M-m")
    dotspacemacs-emacs-leader-key "M-m"
@@ -226,7 +214,7 @@ values."
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
    dotspacemacs-major-mode-leader-key ","
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
-   ;; (default "C-M-m)
+   ;; (default "C-M-m")
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs C-i, TAB and C-m, RET.
@@ -265,10 +253,6 @@ values."
    dotspacemacs-auto-save-file-location 'cache
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
-   ;; If non nil then `ido' replaces `helm' for some commands. For now only
-   ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
-   ;; `find-contrib-file' (SPC f e c) are replaced. (default nil)
-   dotspacemacs-use-ido nil
    ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
    ;; if non nil, the helm header is hidden when there is only one source.
@@ -277,9 +261,14 @@ values."
    ;; define the position to display `helm', options are `bottom', `top',
    ;; `left', or `right'. (default 'bottom)
    dotspacemacs-helm-position 'bottom
+   ;; Controls fuzzy matching in helm. If set to `always', force fuzzy matching
+   ;; in all non-asynchronous sources. If set to `source', preserve individual
+   ;; source settings. Else, disable fuzzy matching in all sources.
+   ;; (default 'always)
+   dotspacemacs-helm-use-fuzzy 'always
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
-   dotspacemacs-enable-paste-micro-state nil
+   dotspacemacs-enable-paste-transient-state nil
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
    dotspacemacs-which-key-delay 0.4
@@ -305,29 +294,50 @@ values."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 30
+   dotspacemacs-active-transparency 90
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-inactive-transparency 10
+   dotspacemacs-inactive-transparency 90
+   ;; If non nil show the titles of transient states. (default t)
+   dotspacemacs-show-transient-state-title t
+   ;; If non nil show the color guide hint for transient state keys. (default t)
+   dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
-   ;; scrolling overrides the default behavior of Emacs which recenters the
-   ;; point when it reaches the top or bottom of the screen. (default t)
+   ;; scrolling overrides the default behavior of Emacs which recenters point
+   ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
-   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
-   ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; Control line numbers activation.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+   ;; This variable can also be set to a property list for finer control:
+   ;; '(:relative nil
+   ;;   :disabled-for-modes dired-mode
+   ;;                       doc-view-mode
+   ;;                       markdown-mode
+   ;;                       org-mode
+   ;;                       pdf-view-mode
+   ;;                       text-mode
+   ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers nil
+   ;; Code folding method. Possible values are `evil' and `origami'.
+   ;; (default 'evil)
+   dotspacemacs-folding-method 'evil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
+   ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
+   ;; over any automatically added closing parenthesis, bracket, quote, etc…
+   ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
+   dotspacemacs-smart-closing-parenthesis nil
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
    dotspacemacs-highlight-delimiters 'all
-   ;; If non nil advises quit functions to keep server open when quitting.
+   ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
    dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
@@ -343,14 +353,16 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'all
    ))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
-It is called immediately after `dotspacemacs/init'.  You are free to put almost
-any user code here.  The exception is org related code, which should be placed
-in `dotspacemacs/user-config'."
+It is called immediately after `dotspacemacs/init', before layer configuration
+executes.
+ This function is mostly useful for variables that need to be set
+before packages are loaded. If you are unsure, you should try in setting them in
+`dotspacemacs/user-config' first."
   )
 
 (defun dotspacemacs/user-config ()
@@ -358,46 +370,44 @@ in `dotspacemacs/user-config'."
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   ;; Emacs
-  (setq-default default-tab-width 4)
+  (setq default-tab-width 4)
 
-  (global-key-binding (kbd "<f12>") 'xref-find-definitions)
-  (global-key-binding (kbd "<f2>") 'lsp-rename)
+  (global-set-key (kbd "C-c c") 'flyspell-correct-word-point)
 
-  ;; Text-mode
-  (add-hook 'text-mode-hook 'flyspell-mode)
+  ;; lsp (by eglot)
+  (use-package eglot
+    :bind (("M-m a e" . 'eglot)
+
+           ("M-m m R" . 'xref-find-references)
+           ("M-m m a" . 'eglot-code-actions)
+           ("M-m m d" . 'xref-find-definitions)
+           ("M-m m f" . 'eglot-format-buffer)
+           ("M-m m h" . 'eglot-help-at-point)
+           ("M-m m r" . 'eglot-rename)
+           ))
+
+  (add-to-list 'eglot-server-programs '(js-mode . ("flow-language-server" "--stdio")))
 
   ;; Magit
   (global-set-key (kbd "M-m g s") 'magit-status)
   (global-set-key (kbd "M-m g g") 'magit-dispatch-popup)
 
-  (eval-after-load 'git-commit-modo
-    '(progn
-       (flyspell-mode)
-       ))
-
   ;; Projectile
-  (setq-default projectile-enable-caching t)
-  (setq-default projectile-completion-system 'grizzl)
+  (setq projectile-enable-caching t
+        projectile-completion-system 'grizzl)
 
-  ;; cpp
-  (add-hook 'c++-mode-hook 'lsp-cquery-enable)
-
-  (eval-after-load 'c++-mode
-    (lambda ()
-      (define-key c++-mode-map (kbd "<f12>") 'xref-find-definitions)
-      (define-key c++-mode-map (kbd "<f2>") 'lsp-rename)
-    ))
+  ;; C/C++
 
   ;; Company
-  (setq-default company-idle-delay 0.1)
-  (setq-default company-minimum-prefix-length 1)
-  (setq-default company-selection-wrap-around t)
+  (global-company-mode)
+  (setq company-idle-delay 0.1
+        company-minimum-prefix-length 1
+        company-selection-wrap-around t)
 
   (eval-after-load 'company-mode
     (lambda ()
-      (add-to-list company-backends 'company-elm)
+      (add-to-list 'company-backends 'company-elm)
       (add-to-list 'company-backends 'company-lsp)
-
 
       (define-key company-active-map (kbd "TAB") 'company-select-next)
       (define-key company-active-map [tab] 'company-select-next)
@@ -405,33 +415,33 @@ layers configuration. You are free to put any user code."
       (define-key company-active-map (kbd "C-p") 'company-select-previous)
       ))
 
-
   ;; Flycheck
-  (setq-default flycheck-display-errors-delay 0.1)
+  (setq flycheck-display-errors-delay 0.1)
 
   ;; golden-ratio-mode
-  (golden-ratio-mode 1)
-  (setq-default golden-ratio-auto-scale t)
-  (setq-default golden-ratio-exclude-modes '("ediff-mode"
-                                             "IELM"
-                                             "dired-mode"
-                                             "eshell-mode"
-                                             "gdb-breakpoints-mode"
-                                             "gdb-disassembly-mode"
-                                             "gdb-frames-mode"
-                                             "gdb-inferior-io-mode"
-                                             "gdb-inferior-io-mode"
-                                             "gdb-locals-mode"
-                                             "gdb-memory-mode"
-                                             "gdb-registers-mode"
-                                             "gdb-threads-mode"
-                                             "gud-mode"
-                                             "gud-mode"
-                                             "helm-mode"
-                                             "magit-log-mode"
-                                             "magit-reflog-mode"
-                                             "magit-status-mode"
-                                             "minimap-mode"))
+  ;; (golden-ratio-mode 1)
+  (setq golden-ratio-auto-scale t
+        golden-ratio-exclude-modes '("ediff-mode"
+                                     "IELM"
+                                     "dired-mode"
+                                     "eshell-mode"
+                                     "gdb-breakpoints-mode"
+                                     "gdb-disassembly-mode"
+                                     "gdb-frames-mode"
+                                     "gdb-inferior-io-mode"
+                                     "gdb-inferior-io-mode"
+                                     "gdb-locals-mode"
+                                     "gdb-memory-mode"
+                                     "gdb-registers-mode"
+                                     "gdb-threads-mode"
+                                     "gud-mode"
+                                     "gud-mode"
+                                     "helm-mode"
+                                     "magit-log-mode"
+                                     "magit-reflog-mode"
+                                     "magit-status-mode"
+                                     "minimap-mode")
+        )
 
   ;; mc
   (global-evil-mc-mode 1)
@@ -442,30 +452,24 @@ layers configuration. You are free to put any user code."
     (kbd "C-m") 'evil-mc-skip-and-goto-next-match
     )
 
-  ;; Racer
-  (setq-default racer-cmd "~/.cargo/bin/racer")
-  (setq-default racer-rust-src-path "~/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src")
-
-  ;; ispell ccat
-  (setq ispell-local-dictionary-alist
-        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" t ("-d" "en_US") nil iso-8859-1)
-          ))
-  (setq ispell-program-name "hunspell"
-        ispell-dictionary "en_US")
-
-  ;; flyspell
-  (setq flyspell-issue-message-flag nil)
-
-  ;; flyspell correction
-  (global-set-key (kbd "C-c c") 'flyspell-correct-word-at-point)
-  (with-eval-after-load 'flycheck
-    (flycheck-pos-tip-mode))
-
-  (global-set-key (kbd "M-m t t") 'hc-toggle-highlight-tabs)
+  ;; Rust
+  (use-package rust-mode
+    :config
+    (setq rust-indent-offset 4)
+    )
 
   ;; Ag
-  (setq-default ag-reuse-window t)
-  (setq-default ag-reuse-buffers t)
+  (setq
+   ag-reuse-window t
+   ag-reuse-buffers t)
+
+
+  ;; Org
+  (load "~/Syncthing/gtd/my_org.el")
+
+  ;; XXX This is workaround.
+  (setq org-agenda-files '("~/Syncthing/gtd/gtd.org"
+                           "~/Syncthing/gtd/tickler.org"))
 
   ;; Org-pomodoro
   (defun notify-send (title message)
@@ -493,81 +497,13 @@ layers configuration. You are free to put any user code."
             (lambda ()
               (notify-send "Pomodoro Killed" "One does not simply kill a pomodoro!")))
 
-  ;; C
-  (setq-default c-default-style "linux"
-                c-basic-offset 4
-                c-toggle-auto-state 0)
-
-  (add-hook 'after-save-hook 'run-clang-format)
-  (defun run-clang-format ()
-    (when (eq major-mode 'c++-mode) (clang-format-buffer)))
-
-  ;; Typescript
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    ;; company is an optional dependency. You have to
-    ;; install it separately via package-install
-    ;; `M-x package-install [ret] company`
-    (company-mode +1))
-
-  ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
-
-  ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
-
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-  ;; Haskell
-  (add-hook 'haskell-mode-hook #'lsp-haskell-enable)
-  (add-hook 'haskell-mode-hook 'flycheck-mode)
-
-  ;; Elm
-  (add-hook 'flycheck-mode-hook 'flycheck-elm-setup)
-
-  ;; Rust
-  (global-set-key (kbd "M-m C-c B") 'cargo-process-bench)
-  (global-set-key (kbd "M-m C-c b") 'cargo-process-build)
-  (global-set-key (kbd "M-m C-c d") 'cargo-process-doc)
-  (global-set-key (kbd "M-m C-c r") 'cargo-process-run)
-  (global-set-key (kbd "M-m C-c t") 'cargo-process-test)
-
-  ;; (add-hook 'rust-mode-hook 'lsp-mode)
-  (add-hook 'rust-mode-hook 'company-mode)
-  (add-hook 'rust-mode-hook 'racer-mode)
-  (add-hook 'rust-mode-hook 'flyspell-prog-mode)
-  (add-hook 'rust-mode-hook 'eldoc-mode)
-
-  (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
-
-  ;; Javascript
-  (setq-default js-indent-level 2)
-
-  ;; Python
-  (elpy-enable)
-  (add-hook 'elpy-mode-hook
-            (lambda ()
-              (define-key elpy-mode-map (kbd "C-c C-f") 'elpy-format-code)
-              (add-hook 'before-save-hook 'elpy-format-code)))
-
   ;; cmake
   (setq-default cmake-indent 4)
 
-  ;; cquery
-  (setq-default cquery-executable "cquery")
-  (setq-default cquery-extra-init-params '(:completion (:detailedLabel t)))
-
   ;; lsp
-  (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil)
-
-
-  ;; other
-  (load "/usr/share/clang/clang-format.el")
+  (setq company-transformers nil
+        company-lsp-async t
+        company-lsp-cache-candidates nil)
   )
 
 (custom-set-variables
@@ -580,7 +516,8 @@ layers configuration. You are free to put any user code."
     (elm tsx-tide typescript-tide ada-gnat asciidoctor asciidoc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cwl d-dmd dockerfile-hadolint emacs-lisp emacs-lisp-checkdoc erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby javascript-tide jsx-tide)))
  '(package-selected-packages
    (quote
-    (powerline spinner org-category-capture alert log4e gntp let-alist with-editor json-snatcher json-reformat multiple-cursors js2-mode hydra parent-mode haskell-mode haml-mode flyspell-correct pos-tip flycheck pkg-info epl iedit anzu evil goto-chg undo-tree highlight yasnippet f dash-functional tern flx company markdown-mode rust-mode bind-map bind-key packed s dash helm-core popup async cquery web-mode tide magit ghub elpy ivy cargo smartparens helm avy lsp-mode projectile org-plus-contrib yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package typescript-mode toml-mode toc-org tagedit srefactor spaceline slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters racer pyvenv pug-mode protobuf-mode popwin pkgbuild-mode persp-mode pcre2el paradox org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-popup macrostep lsp-ui lsp-rust lsp-haskell lorem-ipsum linum-relative link-hint less-css-mode json-mode js2-refactor indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-chars helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-ag grizzl google-translate golden-ratio gnuplot glsl-mode git-commit gh-md flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-elm flx-ido find-file-in-project fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode elm-mode elisp-slime-nav dumb-jump diminish define-word csharp-mode company-tern company-lsp company-flx column-enforce-mode cmake-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent ag adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+    (meson-mode reformatter flymake ht evil-magit orgit magit-gitflow smeargle helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link psci purescript-mode psc-ide flycheck-clang-tidy clang-format bazel-mode eglot jsonrpc ccls auto-dictionary focus olivetti powerline spinner org-category-capture alert log4e gntp let-alist with-editor json-snatcher json-reformat multiple-cursors js2-mode hydra parent-mode haskell-mode haml-mode flyspell-correct pos-tip flycheck pkg-info epl iedit anzu evil goto-chg undo-tree highlight yasnippet f dash-functional tern flx company markdown-mode rust-mode bind-map bind-key packed s dash helm-core popup async cquery web-mode tide magit ghub elpy ivy cargo smartparens helm avy lsp-mode projectile org-plus-contrib yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package typescript-mode toml-mode toc-org tagedit srefactor spaceline slim-mode scss-mode sass-mode restart-emacs request rainbow-delimiters racer pyvenv pug-mode protobuf-mode popwin pkgbuild-mode persp-mode pcre2el paradox org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-popup macrostep lsp-ui lsp-rust lsp-haskell lorem-ipsum linum-relative link-hint less-css-mode json-mode js2-refactor indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-chars helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-css-scss helm-ag grizzl google-translate golden-ratio gnuplot glsl-mode git-commit gh-md flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-elm flx-ido find-file-in-project fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu emmet-mode elm-mode elisp-slime-nav dumb-jump diminish define-word csharp-mode company-tern company-lsp company-flx column-enforce-mode cmake-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent ag adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+ '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

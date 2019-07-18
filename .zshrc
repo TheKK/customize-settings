@@ -18,7 +18,7 @@ ZSH_THEME="ys"
 # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment to change how often before auto-updates occur? (in days)
-export UPDATE_ZSH_DAYS=7
+export UPDATE_ZSH_DAYS=3
 
 # Uncomment following line if you want to disable colors in ls
 # DISABLE_LS_COLORS="true"
@@ -45,41 +45,30 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git hg tmux catimg nyan colored-man colorize cp
-extract fasd gitignore adb zsh_reload rustup theme taskwarrior
-zsh-autosuggestions yarn
-)
+plugins=(git hg tmux catimg colored-man colorize cp
+         extract fasd gitignore zsh_reload rustup themes
+         zsh-autosuggestions yarn zsh_reload
+         )
 
 source $ZSH/oh-my-zsh.sh
 
-# Syntax highlihgt
+# External plugings
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 fpath+="~/.zfunc"
 compinit
 
-# User configuration
+# PATH
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
 export PATH="$PATH:$HOME/.gem/ruby/2.2.0/bin"
 export PATH="$PATH:$HOME/.cabal/bin"
 export PATH="$PATH:$HOME/.go/bin"
-export PATH="$PATH:$HOME/Apps/git-cinnabar"
+export PATH="$PATH:$HOME/Programs/git-cinnabar"
 export PATH="$PATH:$HOME/.yarn/bin"
 export PATH="$PATH:$HOME/.local/bin"
+
 source ~/.cargo/env > /dev/null
-
-# # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+source ~/.ghcup/env
 
 # My settings
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig
@@ -92,13 +81,11 @@ export HAXE_STD_PATH=/opt/haxe/std	#for haxe
 export GCC_COLORS=1
 export RUST_SRC_PATH="$HOME/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
 export CARGO_HOME="$HOME/.cargo/"
-#source ~/Programs/emsdk_portable/emsdk_env.sh > /dev/null
 
 # My startup action
 alias grep='grep --color=always'
 alias ag='ag --color'
 alias packerq='packer --noedit'
-alias uz='source ~/.zshrc'
 alias ez='vim ~/.zshrc'
 alias cat='ccat'
 alias mtr='mtr -t'
@@ -115,87 +102,24 @@ if which exa >> /dev/null; then
     alias ll='exa -lhgu'
 fi
 
-alias rustToggleBt='
-        if [ "$RUST_BACKTRACE" -eq "1" ]; then
-                export RUST_BACKTRACE=0
-                echo "rust backtrace is [off]"
-        else
-                export RUST_BACKTRACE=1
-                echo "rust backtrace is [on]"
-        fi
-'
-
-# My GTD alias
-in()
-{
-	if [ "$#" -eq "0" ]; then
-		task +in # show in tasks
-	else
-		task add +in "$@" # add something as in task
-	fi
+rustToggleBt() {
+    if [ "$RUST_BACKTRACE" -eq "1" ]; then
+        export RUST_BACKTRACE=0
+        echo "rust backtrace is [off]"
+    else
+        export RUST_BACKTRACE=1
+        echo "rust backtrace is [on]"
+    fi
 }
-
-tick()
-{
-	if [ "$#" -lt 2 ]; then
-		echo "tick: usage: tick DATE DESC"
-		return 1
-	fi
-
-	deadline="$1"
-	shift
-	task add +tickle wait:"$deadline" "$@"
-}
-
-next()
-{
-	if [ "$#" -eq "0" ]; then
-		task +next # show next tasks
-	else
-		task add +next "$@" # add something as next task
-	fi
-}
-
-someday()
-{
-	if [ "$#" -eq "0" ]; then
-		task +someday all # show someday tasks
-	else
-		task add +someday wait:someday "$@" # add something as someday task
-	fi
-}
-
-alias think='tick +1d'
-alias ct='task context show'
-alias ctwork='task context work'
-alias cthome='task context home'
-alias ctnone='task context none'
 
 export MYVIMRC=~/.vimrc
 
-# GAMES!
+# GAMES
 alias iidx="$HOME/Programs/angolmois/normal.sh"
-
-# Welcom message
-toilet --metal -f future -t "Welcom to KK's world"
-fortune -s | cowsay
 
 # dpi
 export GDK_DPI_SCALE=1.2
 
-# Add environment variable COCOS_CONSOLE_ROOT for cocos2d-x
-#export COCOS_CONSOLE_ROOT=/home/mozilla-tpe/Programs/cocos2d-x-3.8.1/cocos2d-x-3.8.1/tools/cocos2d-console/bin
-#export PATH=$COCOS_CONSOLE_ROOT:$PATH
-
-# Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
-#export COCOS_TEMPLATES_ROOT=/home/mozilla-tpe/Programs/cocos2d-x-3.8.1/cocos2d-x-3.8.1/templates
-#export PATH=$COCOS_TEMPLATES_ROOT:$PATH
-
-# Add environment variable ANT_ROOT for cocos2d-x
-#export ANT_ROOT=/usr/share/ant/bin
-#export PATH=$ANT_ROOT:$PATH
-
-# Add environment variable ANDROID_SDK_ROOT for cocos2d-x
-#export ANDROID_SDK_ROOT=/home/mozilla-tpe/Apps/android-sdk-linux
-export ANDROID_HOME="/home/kk/Programs/android/android-sdk-linux"
-#export NDK_ROOT=/home/mozilla-tpe/Apps/android-ndk-r10e
+# Welcom message
+toilet --metal -f future -t "Welcom to KK's world"
+fortune -s | cowsay

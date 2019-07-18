@@ -82,9 +82,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'majutsushi/tagbar'
 Plug 'jdonaldson/vaxe'
 Plug 'sophacles/vim-processing'
-Plug 'octave.vim--'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'syntaxudev.vim'
 Plug 'medvid/vim-armasm'
 Plug 'nanotech/jellybeans.vim'
 Plug 'pangloss/vim-javascript'
@@ -98,10 +96,7 @@ Plug 'morhetz/gruvbox'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'rhysd/vim-clang-format'
 Plug 'elmcast/elm-vim'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': './install.sh',
-    \ }
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 Plug 'junegunn/fzf'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -132,7 +127,7 @@ nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
 nnoremap <silent> gs :call LanguageClient#textDocument_documentSymbol()<CR>
 
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+nnoremap <silent> <F2> <Plug> (coc-rename)
 nnoremap <silent> <F5> :call LanguageClient_contextMenu()<CR>
 
 let g:Powerline_symbols='fancy'

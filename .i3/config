@@ -77,7 +77,7 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 bindsym $mod+c move position center
-bindsym $mod+Shift+s exec "sleep 1 && xset dpms force off"
+bindsym $mod+Shift+s exec "sleep 2 && xset dpms force off"
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -235,7 +235,7 @@ bar {
   status_command i3status
   output eDP1
   position top
-  font pango: FontAwesome 9, Electrolize 9
+  font pango: Font Awesome 5 Free:style=Regular, Electrolize 9
   colors {
     background #242C33
     statusline #FFFFFF
