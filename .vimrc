@@ -67,38 +67,43 @@ map  N <Plug>(easymotion-prev)
 " Plugs
 call plug#begin('~/.vim/plugged')
 
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 "Plug 'Valloric/YouCompleteMe'
-Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'guns/xterm-color-table.vim'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
-Plug 'adimit/prolog.vim'
+"Plug 'adimit/prolog.vim'
 Plug 'kristijanhusak/vim-multiple-cursors'
 Plug 'scrooloose/syntastic'
 Plug 'tikhomirov/vim-glsl'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'majutsushi/tagbar'
-Plug 'jdonaldson/vaxe'
-Plug 'sophacles/vim-processing'
+"Plug 'jdonaldson/vaxe'
+"Plug 'sophacles/vim-processing'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'medvid/vim-armasm'
-Plug 'nanotech/jellybeans.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'marijnh/tern_for_vim'
-Plug 'Shutnik/jshint2.vim'
-Plug 'rust-lang/rust.vim'
+"Plug 'medvid/vim-armasm'
+"Plug 'nanotech/jellybeans.vim'
+"Plug 'pangloss/vim-javascript'
+"Plug 'marijnh/tern_for_vim'
+"Plug 'Shutnik/jshint2.vim'
+"Plug 'rust-lang/rust.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
-Plug 'mxw/vim-jsx'
-Plug 'morhetz/gruvbox'
-Plug 'hynek/vim-python-pep8-indent'
+"Plug 'mxw/vim-jsx'
+"Plug 'morhetz/gruvbox'
+"Plug 'hynek/vim-python-pep8-indent'
 Plug 'rhysd/vim-clang-format'
-Plug 'elmcast/elm-vim'
+"Plug 'elmcast/elm-vim'
 "Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-Plug 'junegunn/fzf'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'junegunn/fzf'
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
@@ -108,7 +113,7 @@ let g:deoplete#enable_at_startup = 1
 " Language server neovim
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'haskell': ['hie-wrapper', '--lsp', '-r', getcwd()],
+    \ 'haskell': ['hie-wrapper', '--lsp', '-d', '-l', '/tmp/hh.log'],
     \ }
 
 " Powerline"

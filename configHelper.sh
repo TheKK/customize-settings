@@ -17,6 +17,7 @@ TARGETS=(
         ~/Scripts
         ~/.clang-format
         ~/.gnupg/gpg-agent.conf
+        ~/.stack/config.yaml
 )
 
 TARGETS_LEN=${#TARGETS[@]}
@@ -37,6 +38,7 @@ update() {
                         cp -r "$src"/* "$dest"
                 elif [[ -f "$src" ]]; then
                         printf "copy from %s to %s\n" "$src" "$dest"
+                        mkdir -p $(dirname $dest)
                         cp -r "$src" "$dest"
                 fi
         done

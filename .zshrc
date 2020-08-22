@@ -47,7 +47,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git hg tmux catimg colored-man colorize cp
          extract fasd gitignore zsh_reload rustup themes
-         zsh-autosuggestions yarn zsh_reload
+         zsh-autosuggestions yarn zsh_reload stack
          )
 
 source $ZSH/oh-my-zsh.sh
@@ -58,36 +58,11 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 fpath+="~/.zfunc"
 compinit
 
-# PATH
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/bin/core_perl:$HOME/.gem/ruby/2.1.0/bin"
-export PATH="$PATH:$HOME/.gem/ruby/2.2.0/bin"
-export PATH="$PATH:$HOME/.cabal/bin"
-export PATH="$PATH:$HOME/.go/bin"
-export PATH="$PATH:$HOME/Programs/git-cinnabar"
-export PATH="$PATH:$HOME/.yarn/bin"
-export PATH="$PATH:$HOME/.local/bin"
-
-source ~/.cargo/env > /dev/null
-source ~/.ghcup/env
-
-# My settings
-export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig
-export TERM=xterm-256color
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-export EDITOR=nvim
-export HAXE_STD_PATH=/opt/haxe/std	#for haxe
-export GCC_COLORS=1
-export RUST_SRC_PATH="$HOME/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
-export CARGO_HOME="$HOME/.cargo/"
-
 # My startup action
 alias grep='grep --color=always'
 alias ag='ag --color'
 alias packerq='packer --noedit'
 alias ez='vim ~/.zshrc'
-alias cat='ccat'
 alias mtr='mtr -t'
 alias vim='nvim'
 alias vi='nvim'
